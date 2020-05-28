@@ -1,0 +1,35 @@
+{
+	"name": "strapi-deliveroo",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"client": "npm start --prefix client",
+		"client-dev": "npm run dev --prefix client",
+		"client-install": "npm install --prefix client",
+		"client-i": "npm install --prefix client",
+		"client-update": "npm update --prefix client",
+		"client-uninstall": "npm uninstall --prefix client",
+		"server": "npm start --prefix server",
+		"server-dev": "npm run dev --prefix server",
+		"server-install": "npm install --prefix server",
+		"server-i": "npm install --prefix server",
+		"server-update": "npm update --prefix server",
+		"server-uninstall": "npm uninstall --prefix server",
+		"all-install": "npm i && npm run client-install && npm run server-install",
+		"all-i": "npm i && npm run client-install && npm run server-install",
+		"all-update": "npm i && npm run client-update && npm run server-update",
+		"all-uninstall": "npm i && npm run client-uninstall && npm run server-uninstall",
+		"dev": "concurrently 'npm run dev --prefix client' 'npm run dev --prefix server'",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [],
+	"author": "Zachary Williams <zak.williams2287@gmail.com>",
+	"license": "MIT",
+	"devDependencies": {
+		"concurrently": "^5.2.0"
+	},
+	"dependencies": {
+		"dotenv": "^8.2.0"
+	}
+}
