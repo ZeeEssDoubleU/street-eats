@@ -1,5 +1,5 @@
 import React from "react";
-import { StylesProvider } from "@material-ui/core";
+import { StylesProvider, CssBaseline } from "@material-ui/core";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import { ThemeProvider } from "styled-components";
 // import styles
@@ -13,9 +13,9 @@ import Layout from "../components/Layout";
 const WrapRoot = ({ Component, pageProps }) => {
 	return (
 		<StylesProvider injectFirst>
+			<CssBaseline />
 			<MuiThemeProvider theme={theme}>
 				<ThemeProvider theme={theme}>
-					<ResetStyle />
 					<Layout {...pageProps}>
 						<Component {...pageProps} />
 					</Layout>

@@ -14,28 +14,11 @@ import {
 	Typography,
 } from "@material-ui/core";
 
-const RestaurantList = (props) => {
-	const [restaurants, setRestaurants] = useState();
+// ******************
+// component
+// ******************
 
-	const getRestaurants = async () => {
-		try {
-			const response = await axios({
-				method: "get",
-				url: "/restaurants",
-				baseURL: "http://localhost:1337",
-			});
-			console.log("response", response);
-
-			setRestaurants(response.data);
-		} catch (error) {
-			console.error(error);
-		}
-	};
-
-	useEffect(() => {
-		getRestaurants();
-	}, []);
-
+const RestaurantList = ({ restaurants }) => {
 	const displayRestaurants =
 		restaurants &&
 		restaurants.map((restaurant) => (
@@ -53,7 +36,11 @@ const RestaurantList = (props) => {
 						</CardContent>
 					</CardActionArea>
 					<StyledCardActions>
-						<Link href={`/restaurants/${restaurant.slug}`} passHref>
+						<Link
+							as={`/restaurants/${restaurant.slug}`}
+							href={`/restaurants/[slug]`}
+							passHref
+						>
 							<Button variant="contained" color="secondary">
 								View
 							</Button>
@@ -67,6 +54,10 @@ const RestaurantList = (props) => {
 };
 
 export default RestaurantList;
+
+// ******************
+// styles
+// ******************
 
 const StyledGrid = styled.div`
 	display: grid;

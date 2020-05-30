@@ -74,7 +74,7 @@ export default createGlobalStyle`
    button,
    textarea,
    select {
-   font: inherit;
+      font: inherit;
    }
 
    /* Remove all animations and transitions for people that prefer not to see them */
