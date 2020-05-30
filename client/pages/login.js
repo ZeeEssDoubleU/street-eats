@@ -1,10 +1,111 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { useState } from "react";
+import axios from "axios";
+import Link from "next/link";
+import styled from "styled-components";
+// import components
+import {
+	Card,
+	CardHeader,
+	CardContent,
+	CardActions,
+	Button,
+	FormControl,
+	FilledInput,
+	InputLabel,
+	InputAdornment,
+	TextField,
+	IconButton,
+} from "@material-ui/core";
+import { Visibility, VisibilityOff } from "@material-ui/icons";
 
+// ******************
+// component
+// ******************
 const login = (props) => {
-	return <div>This is the login page.</div>;
+	const [formData, setFormData] = useState({
+		email: "",
+		password: "",
+		showPassword: false,
+	});
+
+	const showPasswordIcon = (
+		<InputAdornment position="end">
+			<IconButton
+				aria-label="toggle password visibility"
+				edge="end"
+				onClick={() =>
+					setFormData({
+						...formData,
+						showPassword: !formData.showPassword,
+					})
+				}
+			>
+				{formData.showPassword ? <Visibility /> : <VisibilityOff />}
+			</IconButton>
+		</InputAdornment>
+	);
+
+	const handleChange = (target) => (event) => {
+		const newData = {
+			...formData,
+			[target]: event.target.value,
+		};
+		setFormData(newData);
+	};
+
+	return (
+		<StyledCard>
+			<CardHeader title="Login" />
+			<CardContent>
+				<Form>
+					<TextField
+						required
+						label="Email"
+						variant="filled"
+						type="email"
+						fullWidth
+						margin="normal"
+						value={formData.email}
+						onChange={handleChange("email")}
+					/>
+					{/* custom password input */}
+					<FormControl required fullWidth margin="normal" variant="filled">
+						<InputLabel htmlFor="password">Password</InputLabel>
+						<FilledInput
+							id="conpassword"
+							type={formData.showPassword ? "text" : "password"}
+							endAdornment={showPasswordIcon}
+							value={formData.password}
+							onChange={handleChange("password")}
+						/>
+					</FormControl>
+				</Form>
+			</CardContent>
+			<StyledCardActions>
+				<Button variant="contained" color="primary">
+					Login
+				</Button>
+				<Button variant="contained" color="secondary">
+					Register
+				</Button>
+			</StyledCardActions>
+		</StyledCard>
+	);
 };
 
-login.propTypes = {};
-
 export default login;
+
+// ******************
+// styles
+// ******************
+
+const StyledCard = styled(Card)`
+	margin: 1rem 0;
+`;
+const StyledCardActions = styled(CardActions)`
+	padding: 1rem;
+`;
+const Form = styled.form`
+	display: flex;
+	flex-wrap: wrap;
+`;
