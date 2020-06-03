@@ -9,6 +9,8 @@ import GlobalStyle from "../styles/global";
 // import "bootstrap/dist/css/bootstrap.min.css"; // ? enable as needed
 // components
 import Layout from "../components/Layout";
+// import store
+import { StoreProvider } from "../store/useStore";
 
 const WrapRoot = ({ Component, pageProps }) => {
 	return (
@@ -16,9 +18,11 @@ const WrapRoot = ({ Component, pageProps }) => {
 			<CssBaseline />
 			<MuiThemeProvider theme={theme}>
 				<ThemeProvider theme={theme}>
-					<Layout {...pageProps}>
-						<Component {...pageProps} />
-					</Layout>
+					<StoreProvider>
+						<Layout {...pageProps}>
+							<Component {...pageProps} />
+						</Layout>
+					</StoreProvider>
 				</ThemeProvider>
 			</MuiThemeProvider>
 		</StylesProvider>

@@ -72,11 +72,7 @@ export default restaurants;
 export const getStaticPaths = async () => {
 	// Call an external API endpoint to get posts
 	try {
-		const response = await axios({
-			method: "get",
-			url: "/restaurants",
-			baseURL: "http://localhost:1337",
-		});
+		const response = await axios.get("http://localhost:1337/restaurants");
 		const restaurants = response.data;
 
 		// Get the paths we want to pre-render based on posts
@@ -94,11 +90,9 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async ({ params }) => {
 	try {
-		const response = await axios({
-			method: "get",
-			url: `/restaurants/${params.slug}`,
-			baseURL: "http://localhost:1337",
-		});
+		const response = await axios.get(
+			`http://localhost:1337/restaurants/${params.slug}`,
+		);
 		const dishes = response.data.dishes;
 		return {
 			props: {

@@ -18,7 +18,7 @@ import {
 // component
 // ******************
 
-const RestaurantList = ({ restaurants }) => {
+const restaurants = ({ restaurants }) => {
 	const displayRestaurants =
 		restaurants &&
 		restaurants.map((restaurant) => (
@@ -53,7 +53,25 @@ const RestaurantList = ({ restaurants }) => {
 	return <StyledGrid>{displayRestaurants}</StyledGrid>;
 };
 
-export default RestaurantList;
+export default restaurants;
+
+// ******************
+// initial props
+// ******************
+export async function getStaticProps() {
+	try {
+		const response = await axios.get("http://localhost:1337/restaurants");
+		const restaurants = response.data;
+
+		return {
+			props: {
+				restaurants,
+			},
+		};
+	} catch (error) {
+		console.error(error);
+	}
+}
 
 // ******************
 // styles
