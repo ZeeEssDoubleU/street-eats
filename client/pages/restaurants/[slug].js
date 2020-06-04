@@ -14,12 +14,16 @@ import {
 	Button,
 	Typography,
 } from "@material-ui/core";
+// import store
+import useStore from "../../store/useStore";
+import { addItem } from "../../store/actions/cart";
 
 // ******************
 // component
 // ******************
 
-const restaurants = ({ dishes }) => {
+const restaurants = ({ restaurant, dishes }) => {
+	const { state, dispatch } = useStore();
 	const router = useRouter();
 
 	const displayDishes =
@@ -37,15 +41,13 @@ const restaurants = ({ dishes }) => {
 						</CardContent>
 					</CardActionArea>
 					<StyledCardActions>
-						{/* <Link
-							as={`/dishs/${dish.slug}`}
-							href={`/dishs?id=${dish.id}`}
-							passHref
-						> */}
-						<Button variant="contained" color="secondary">
+						<Button
+							variant="contained"
+							color="secondary"
+							onClick={() => addItem(dish, state, dispatch)}
+						>
 							Add to Cart
 						</Button>
-						{/* </Link> */}
 					</StyledCardActions>
 				</Card>
 			</Grid>
@@ -57,10 +59,41 @@ const restaurants = ({ dishes }) => {
 		return <div>Loading...</div>;
 	}
 
-	return <StyledGrid>{displayDishes}</StyledGrid>;
+	return (
+		<StyledGrid>
+			<Header>
+				<Typography variant="h2" component="h1">
+					{restaurant.name}
+				</Typography>
+			</Header>
+			{displayDishes}
+		</StyledGrid>
+	);
 };
-
 export default restaurants;
+
+// ******************
+// styles
+// ******************
+
+const StyledGrid = styled.div`
+	display: grid;
+	grid-template-columns: repeat(auto-fit, 24rem);
+	justify-content: center;
+	grid-gap: 1rem;
+`;
+
+const Header = styled.div`
+	place-self: center;
+`;
+
+const CardImage = styled(CardMedia)`
+	height: 15rem;
+`;
+
+const StyledCardActions = styled(CardActions)`
+	padding: 1rem;
+`;
 
 // ******************
 // initial props & paths
@@ -93,9 +126,11 @@ export const getStaticProps = async ({ params }) => {
 		const response = await axios.get(
 			`http://localhost:1337/restaurants/${params.slug}`,
 		);
+		const restaurant = response.data;
 		const dishes = response.data.dishes;
 		return {
 			props: {
+				restaurant,
 				dishes,
 			},
 		};
@@ -103,23 +138,3 @@ export const getStaticProps = async ({ params }) => {
 		console.error(error);
 	}
 };
-
-// ******************
-// styles
-// ******************
-
-const StyledGrid = styled.div`
-	display: grid;
-	grid-template-columns: repeat(auto-fill, 24rem);
-	justify-content: center;
-	grid-gap: 1rem;
-	margin: 1rem 0;
-`;
-
-const CardImage = styled(CardMedia)`
-	height: 15rem;
-`;
-
-const StyledCardActions = styled(CardActions)`
-	padding: 1rem;
-`;

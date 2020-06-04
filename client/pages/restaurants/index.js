@@ -79,10 +79,9 @@ export async function getStaticProps() {
 
 const StyledGrid = styled.div`
 	display: grid;
-	grid-template-columns: repeat(auto-fill, 24rem);
+	grid-template-columns: repeat(auto-fit, 24rem);
 	justify-content: center;
 	grid-gap: 1rem;
-	margin: 1rem 0;
 `;
 
 const CardImage = styled(CardMedia)`

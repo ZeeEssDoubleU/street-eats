@@ -86,9 +86,9 @@ const NavMenu = styled.div`
 `;
 const StyledButton = styled(Button)`
 	height: 4rem;
-	padding: 1em;
+	padding: 1rem;
 	color: white;
 `;
 const Main = styled(Container)`
-	padding-top: 4rem;
+	padding: calc(4rem + 1rem) 1rem;
 `;
