@@ -8,4 +8,8 @@ export const theme = createMuiTheme({
 		},
 		secondary: deepOrange,
 	},
+	drawer: {
+		width: "24rem",
+		zIndex: 10,
+	},
 });

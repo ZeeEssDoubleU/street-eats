@@ -83,11 +83,9 @@ const StyledGrid = styled.div`
 	justify-content: center;
 	grid-gap: 1rem;
 `;
-
 const CardImage = styled(CardMedia)`
 	height: 15rem;
 `;
-
 const StyledCardActions = styled(CardActions)`
 	padding: 1rem;
 `;

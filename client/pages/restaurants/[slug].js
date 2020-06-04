@@ -60,14 +60,16 @@ const restaurants = ({ restaurant, dishes }) => {
 	}
 
 	return (
-		<StyledGrid>
-			<Header>
-				<Typography variant="h2" component="h1">
-					{restaurant.name}
-				</Typography>
-			</Header>
-			{displayDishes}
-		</StyledGrid>
+		<>
+			<StyledGrid>
+				<Header>
+					<Typography variant="h2" component="h1">
+						{restaurant.name}
+					</Typography>
+				</Header>
+				{displayDishes}
+			</StyledGrid>
+		</>
 	);
 };
 export default restaurants;

@@ -2,7 +2,15 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Head from "next/head";
 import Link from "next/link";
-import { AppBar, Container, Button, Typography } from "@material-ui/core";
+// import components
+import {
+	AppBar,
+	Drawer,
+	Container,
+	Button,
+	Typography,
+} from "@material-ui/core";
+import Cart from "./Cart";
 // import store / utils
 import useStore from "../store/useStore";
 import { removeCredsFromCookies } from "../store/actions/auth";
@@ -31,7 +39,7 @@ const Layout = (props) => {
 	);
 
 	return (
-		<>
+		<Flex>
 			<Head>
 				<link
 					rel="stylesheet"
@@ -44,7 +52,7 @@ const Layout = (props) => {
 				// TODO: activate when ready
 				{/* <script src="https://js.stripe.com/v3" /> */}
 			</Head>
-			<AppBar color="primary">
+			<StyledAppBar color="primary">
 				<Nav>
 					<NavBrand>
 						<Link href="/restaurants" passHref>
@@ -55,12 +63,13 @@ const Layout = (props) => {
 					</NavBrand>
 					<NavMenu>{navMenuItems}</NavMenu>
 				</Nav>
-			</AppBar>
+			</StyledAppBar>
 			<Main component="main" maxWidth="xl">
 				{props.children}
 			</Main>
+			<Cart />
 			<footer></footer>
-		</>
+		</Flex>
 	);
 };
 
@@ -71,8 +80,16 @@ export default Layout;
 // ******************
 // styles
 // ******************
+const Flex = styled.div`
+	display: flex;
+	flex-direction: flex;
+`;
+const StyledAppBar = styled(AppBar)`
+	z-index: ${(props) => props.theme.drawer.zIndex + 1};
+`;
 const Nav = styled.nav`
 	display: flex;
+	flex-direction: row;
 	align-items: center;
 	justify-content: space-between;
 `;
