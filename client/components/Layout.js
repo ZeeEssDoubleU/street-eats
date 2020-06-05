@@ -7,6 +7,7 @@ import {
 	AppBar,
 	Drawer,
 	Container,
+	Avatar,
 	Button,
 	Typography,
 } from "@material-ui/core";
@@ -23,6 +24,16 @@ const Layout = (props) => {
 
 	const navMenuItems = state.isAuthenticated ? (
 		<>
+			<Link href="/" passHref>
+				<StyledButton>
+					{/* TODO: need to add link to avatar pic */}
+					<StyledAvatar
+						alt={`${state.user_current}'s avatar`}
+						src={"noLinkYet"}
+					/>
+					{state.user_current}
+				</StyledButton>
+			</Link>
 			<StyledButton onClick={() => removeCredsFromCookies(state, dispatch)}>
 				Logout
 			</StyledButton>
@@ -100,6 +111,11 @@ const NavBrand = styled.div`
 const NavMenu = styled.div`
 	display: flex;
 	align-items: center;
+`;
+const StyledAvatar = styled(Avatar)`
+	height: 2rem;
+	width: 2rem;
+	margin-right: 0.5rem;
 `;
 const StyledButton = styled(Button)`
 	height: 4rem;

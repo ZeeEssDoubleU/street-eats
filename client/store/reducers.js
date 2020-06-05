@@ -3,21 +3,23 @@ import Cookies from "js-cookie";
 // import actions / utils
 import { actionTypes_auth, getUser_current } from "./actions/auth";
 import { actionTypes_cart } from "./actions/cart";
+import { Restaurant } from "@material-ui/icons";
 
 // ******************
-// reducers
+// initial state
 // ******************
 export const initState =
 	typeof window !== "undefined"
 		? {
 				isAuthenticated: !isEmpty(getUser_current()),
 				user_current: getUser_current(),
-				cart: {
-					items: [],
-					total: 0,
-				},
+				cart: [],
 		  }
 		: {};
+
+// ******************
+// root reducer
+// ******************
 export const reducer_root = (state, action) => {
 	console.log("action:", action);
 
@@ -45,65 +47,120 @@ export const reducer_root = (state, action) => {
 	}
 };
 
+// ******************
+// sub reducers
+// ******************
+
+// TODO: NEED TO MAKE SURE CART ACTIONS CANT BE PERFOMED WITHOUT BEING AUTHENTICATED.  ISAUTHENTICATED = TRUE
+// *** add item
 const reducer_addItem = (cart, payload) => {
-	const { id, name, price, restaurant } = payload;
-	const newItem = { id, name, price, restaurant };
-
-	// check if newItem has already been added
-	const alreadyAdded = cart.items.find((item) => item.id === newItem.id);
-
-	let updatedItems;
-	// if NOT already added, add newItem to cart
-	if (!alreadyAdded) {
-		newItem.quantity = 1;
-		updatedItems = [...cart.items, newItem];
-	}
-	// if newItem already added, find match and increment quantity +1
-	else {
-		alreadyAdded.quantity += 1;
-		updatedItems = cart.items.map((item) =>
-			item.id === newItem.id ? alreadyAdded : item,
-		);
-	}
-	const updatedTotal = cart.total + newItem.price;
-
-	const updatedCart = {
-		...cart,
-		items: updatedItems,
-		total: updatedTotal,
+	const { dish, restaurant } = payload;
+	const newItem = {
+		id: dish.id,
+		name: dish.name,
+		price: dish.price,
+		quantity: 1,
+	};
+	const newRestaurant = {
+		id: restaurant.id,
+		name: restaurant.name,
+		slug: restaurant.slug,
+		items: [],
+		items_total: 0,
 	};
 
-	Cookies.set("cart", updatedCart);
-	return updatedCart;
+	// check if restaurant has been added to cart
+	const restaurantExists = cart.find(
+		(restaurant) => restaurant.id === newRestaurant.id,
+	);
+
+	// set restaurant to update
+	const updateRestaurant = restaurantExists ? restaurantExists : newRestaurant;
+
+	// check if item has been added to existing restaurant
+	const itemExists = updateRestaurant.items.find(
+		(item) => item.id === newItem.id,
+	);
+
+	// UPDATE restaurant cart items
+	updateRestaurant.items = !itemExists
+		? // if newItem NOT already added, add to restaurant cart
+		  [...updateRestaurant.items, newItem]
+		: // if newItem already added, find match and increment quantity +1
+		  updateRestaurant.items.map((item) => {
+				if (item.id === newItem.id) {
+					item.quantity += 1;
+					return item;
+				} else {
+					return item;
+				}
+		  });
+
+	// UPDATE restaurant cart total cost
+	updateRestaurant.items_total = updateRestaurant.items_total + newItem.price;
+
+	// UPDATE global cart with updated restaurant cart
+	const updateCart = restaurantExists
+		? // if restaurant already added, find match and update restaurant
+		  cart.map((restaurant) =>
+				restaurant.id === updateRestaurant.id
+					? updateRestaurant
+					: restaurant,
+		  )
+		: // if restaurant NOT already added, add to cart
+		  [...cart, updateRestaurant];
+
+	localStorage.setItem("cart", JSON.stringify(updateCart));
+	return updateCart;
 };
 
+// *** remove item
 const reducer_removeItem = (cart, payload) => {
-	const { id } = payload;
-	const removeItem = { id };
+	const { dish, restaurant } = payload;
+	const removeItem = { id: dish.id };
+	const removeRestaurant = { id: restaurant.id };
 
-	// check if removeItem is actually removeable
-	const itemRemovable = cart.items.find((item) => item.id === removeItem.id);
+	// check if restaurant has been added to cart
+	const restaurantExists = cart.find(
+		(restaurant) => restaurant.id === removeRestaurant.id,
+	);
 
-	let updatedItems;
-	// if there is only 1 of the removeable item, remove the item completely
-	if (itemRemovable.quantity === 1) {
-		updatedItems = cart.items.filter((item) => item.id !== removeItem.id);
-	}
-	// if there is MORE than 1 of the removeable item, decrement by 1
-	else {
-		itemRemovable.quantity -= 1;
-		updatedItems = cart.items.map((item) =>
-			item.id === removeItem.id ? itemRemovable : item,
-		);
-	}
-	const updatedTotal = cart.total - itemRemovable.price;
+	// set restaurant to update
+	const updateRestaurant = restaurantExists;
 
-	const updatedCart = {
-		...cart,
-		items: updatedItems,
-		total: updatedTotal,
-	};
+	// check if item has been added to existing restaurant
+	const itemExists = updateRestaurant.items.find(
+		(item) => item.id === removeItem.id,
+	);
 
-	Cookies.set("cart", updatedCart);
-	return updatedCart;
+	// UPDATE restaurant cart items
+	updateRestaurant.items =
+		itemExists.quantity === 1
+			? // if there is only 1 item, remove the item completely
+			  updateRestaurant.items.filter((item) => item.id !== removeItem.id)
+			: // if there is MORE than 1 of the item, decrement by 1
+			  updateRestaurant.items.map((item) => {
+					if (item.id === removeItem.id) {
+						item.quantity -= 1;
+						return item;
+					} else {
+						return item;
+					}
+			  });
+
+	// UPDATE restaurant cart total cost
+	updateRestaurant.items_total =
+		updateRestaurant.items_total - itemExists.price;
+
+	// UPDATE global cart with updated restaurant cart
+	const updateCart = cart
+		.map((restaurant) =>
+			// UPDATE corresponding restaurant
+			restaurant.id === updateRestaurant.id ? updateRestaurant : restaurant,
+		)
+		// REMOVE any restaurants from cart that don't have items
+		.filter((restaurant) => restaurant.items.length > 0);
+
+	localStorage.setItem("cart", JSON.stringify(updateCart));
+	return updateCart;
 };

@@ -9,10 +9,9 @@ import {
 	CardContent,
 	CardMedia,
 	CardActionArea,
-	CardActions,
-	Button,
 	Typography,
 } from "@material-ui/core";
+import { CardActionButton } from "../../components/elements/CardActionButton";
 
 // ******************
 // component
@@ -24,7 +23,7 @@ const restaurants = ({ restaurants }) => {
 		restaurants.map((restaurant) => (
 			<Grid item key={restaurant.id}>
 				<Card>
-					<CardActionArea>
+					<StyledActionArea component="div" disableRipple>
 						<CardImage
 							image={`http://localhost:1337${restaurant.image[0].url}`}
 						/>
@@ -34,18 +33,16 @@ const restaurants = ({ restaurants }) => {
 							</Typography>
 							<Typography>{restaurant.description}</Typography>
 						</CardContent>
-					</CardActionArea>
-					<StyledCardActions>
 						<Link
 							as={`/restaurants/${restaurant.slug}`}
 							href={`/restaurants/[slug]`}
 							passHref
 						>
-							<Button variant="contained" color="secondary">
+							<CardActionButton variant="contained" color="secondary">
 								View
-							</Button>
+							</CardActionButton>
 						</Link>
-					</StyledCardActions>
+					</StyledActionArea>
 				</Card>
 			</Grid>
 		));
@@ -83,9 +80,9 @@ const StyledGrid = styled.div`
 	justify-content: center;
 	grid-gap: 1rem;
 `;
+const StyledActionArea = styled(CardActionArea)`
+	cursor: default;
+`;
 const CardImage = styled(CardMedia)`
 	height: 15rem;
-`;
-const StyledCardActions = styled(CardActions)`
-	padding: 1rem;
 `;

@@ -166,6 +166,7 @@ const signup = (props) => {
 					<Button
 						variant="contained"
 						color="primary"
+						size="large"
 						form="form-signup"
 						type="submit"
 					>

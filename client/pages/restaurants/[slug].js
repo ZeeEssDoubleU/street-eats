@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -10,10 +10,9 @@ import {
 	CardContent,
 	CardMedia,
 	CardActionArea,
-	CardActions,
-	Button,
 	Typography,
 } from "@material-ui/core";
+import { CardActionButton } from "../../components/elements/CardActionButton";
 // import store
 import useStore from "../../store/useStore";
 import { addItem } from "../../store/actions/cart";
@@ -31,7 +30,7 @@ const restaurants = ({ restaurant, dishes }) => {
 		dishes.map((dish) => (
 			<Grid item key={dish.id}>
 				<Card>
-					<CardActionArea>
+					<StyledActionArea component="div" disableRipple>
 						<CardImage image={`http://localhost:1337${dish.image.url}`} />
 						<CardContent>
 							<Typography variant="h5" component="h2" gutterBottom>
@@ -39,16 +38,17 @@ const restaurants = ({ restaurant, dishes }) => {
 							</Typography>
 							<Typography>{dish.description}</Typography>
 						</CardContent>
-					</CardActionArea>
-					<StyledCardActions>
-						<Button
+						<CardActionButton
 							variant="contained"
 							color="secondary"
-							onClick={() => addItem(dish, state, dispatch)}
+							onClick={() => {
+								const payload = { dish, restaurant };
+								addItem(payload, state, dispatch);
+							}}
 						>
 							Add to Cart
-						</Button>
-					</StyledCardActions>
+						</CardActionButton>
+					</StyledActionArea>
 				</Card>
 			</Grid>
 		));
@@ -62,11 +62,11 @@ const restaurants = ({ restaurant, dishes }) => {
 	return (
 		<>
 			<StyledGrid>
-				<Header>
+				<RestaurantName>
 					<Typography variant="h2" component="h1">
 						{restaurant.name}
 					</Typography>
-				</Header>
+				</RestaurantName>
 				{displayDishes}
 			</StyledGrid>
 		</>
@@ -84,17 +84,14 @@ const StyledGrid = styled.div`
 	justify-content: center;
 	grid-gap: 1rem;
 `;
-
-const Header = styled.div`
+const RestaurantName = styled.div`
 	place-self: center;
 `;
-
+const StyledActionArea = styled(CardActionArea)`
+	cursor: default;
+`;
 const CardImage = styled(CardMedia)`
 	height: 15rem;
-`;
-
-const StyledCardActions = styled(CardActions)`
-	padding: 1rem;
 `;
 
 // ******************

@@ -21,10 +21,7 @@ import {
 } from "@material-ui/core";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 // import store / utils
-import {
-	saveCredsToCookies,
-	getUser_current,
-} from "../store/actions/auth";
+import { saveCredsToCookies, getUser_current } from "../store/actions/auth";
 import useStore from "../store/useStore";
 
 // ******************
@@ -119,6 +116,7 @@ const login = (props) => {
 					<Button
 						variant="contained"
 						color="primary"
+						size="large"
 						form="form-login"
 						type="submit"
 					>

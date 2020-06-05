@@ -12,4 +12,12 @@ export const theme = createMuiTheme({
 		width: "24rem",
 		zIndex: 10,
 	},
+	button: {
+		disabled: {
+			color: "rgba(0, 0, 0, 0.87)",
+			backgroundColor: "none",
+			borderColor: "rgba(0, 0, 0, 0.23)",
+			borderRightColor: "transparent",
+		},
+	},
 });
