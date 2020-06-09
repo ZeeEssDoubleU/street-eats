@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
 import Link from "next/link";
-import Router from "next/router";
 import styled from "styled-components";
 import Cookies from "js-cookie";
 // import components
@@ -23,7 +21,7 @@ import { Visibility, VisibilityOff } from "@material-ui/icons";
 // import store / utils
 import { saveCredsToCookies, getUser_current } from "../store/actions/auth";
 import useStore from "../store/useStore";
-import loginUser from "../store/actions/auth";
+import { loginUser } from "../store/actions/auth";
 
 // ******************
 // component
@@ -44,9 +42,9 @@ const login = (props) => {
 		setFormData(newData);
 	};
 
-	const onSubmit = async (event) => {
+	const onSubmit = (event) => {
 		event.preventDefault();
-		loginUser(state, dispatch);
+		loginUser(formData, state, dispatch);
 	};
 
 	const showPasswordIcon = (

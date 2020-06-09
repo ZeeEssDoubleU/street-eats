@@ -23,6 +23,15 @@ const CartCard = ({ restaurant }) => {
 	const { state, dispatch } = useStore();
 	const router = useRouter();
 
+	// check if authenticated
+	// redirect to login page if not
+	const isAuthenticated = state.isAuthenticated
+		? {
+				pathname: "/checkout",
+				query: { restaurant: restaurant.slug },
+		  }
+		: "/login";
+
 	return (
 		<StyledCard key={restaurant.id}>
 			<StyledActionArea component="div" disableRipple>
@@ -31,13 +40,7 @@ const CartCard = ({ restaurant }) => {
 					<CartCardItems restaurant={restaurant} />
 				</CardContent>
 				{/* // TODO: isAuthenticted must be true to place order */}
-				<Link
-					href={{
-						pathname: "/checkout",
-						query: { restaurant: restaurant.slug },
-					}}
-					passHref
-				>
+				<Link href={isAuthenticated} passHref>
 					<CardActionButton
 						variant="contained"
 						color="secondary"

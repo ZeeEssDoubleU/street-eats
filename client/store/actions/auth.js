@@ -1,6 +1,7 @@
 import jwt_decode from "jwt-decode";
 import Cookies from "js-cookie";
 import Router from "next/router";
+import axios from "axios";
 
 export const actionTypes_auth = {
 	SET_CURRENT_USER: "SET_CURRENT_USER",
@@ -8,7 +9,7 @@ export const actionTypes_auth = {
 
 // if token exists, apply to ALL request auth headers
 // need to add this manually to all api requests
-export const setRequestHeaders = (state) => {
+export const setRequestHeaders = () => {
 	const token = Cookies.get("jwt");
 
 	return {
@@ -48,12 +49,11 @@ export const removeCredsFromCookies = (state, dispatch) => {
 
 export const getUser_current = () => Cookies.get("user_current") || null;
 
-export const loginUser = async (state, dispatch) => {
+export const loginUser = async (formData, state, dispatch) => {
 	try {
 		const response = await axios.post(
 			"http://localhost:1337/auth/local",
 			formData,
-			setRequestHeaders(),
 		);
 		const credentials = response.data;
 		console.log("response_login:", credentials);
@@ -66,18 +66,19 @@ export const loginUser = async (state, dispatch) => {
 		console.error(error);
 	}
 };
-export const registerUser = async (state, dispatch) => {
+export const registerUser = async (formData, state, dispatch) => {
 	try {
 		const response = await axios.post(
 			"http://localhost:1337/auth/local/register",
 			formData,
-			setRequestHeaders(),
 		);
 		const credentials = response.data;
 		console.log("response_signup", credentials);
 
 		saveCredsToCookies(credentials, state, dispatch);
-		// sendEmailValidation();
+
+		// navigate to restaurants page
+		Router.push("/restaurants");
 	} catch (error) {
 		console.error(error.response);
 	}
