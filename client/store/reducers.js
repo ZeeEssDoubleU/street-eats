@@ -14,6 +14,7 @@ export const initState =
 				isAuthenticated: !isEmpty(getUser_current()),
 				user_current: getUser_current(),
 				cart: [],
+				checkout: null,
 		  }
 		: {};
 

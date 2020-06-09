@@ -9,7 +9,7 @@ import isEmpty from "lodash/fp/isEmpty";
 import Cookies from "js-cookie";
 // import actions / reducers / utils
 import { actionTypes_auth, getUser_current } from "./actions/auth";
-import { actionTypes_cart } from "./actions/cart";
+import { actionTypes_cart, updateCheckout } from "./actions/cart";
 import { reducer_root, initState } from "./reducers";
 
 // ! this causing render error on logout button.  May need to move initial logic to useEffect in StoreProvider

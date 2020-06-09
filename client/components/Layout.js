@@ -3,14 +3,7 @@ import styled from "styled-components";
 import Head from "next/head";
 import Link from "next/link";
 // import components
-import {
-	AppBar,
-	Drawer,
-	Container,
-	Avatar,
-	Button,
-	Typography,
-} from "@material-ui/core";
+import { AppBar, Drawer, Avatar, Button, Typography } from "@material-ui/core";
 import Cart from "./Cart";
 // import store / utils
 import useStore from "../store/useStore";
@@ -27,10 +20,7 @@ const Layout = (props) => {
 			<Link href="/" passHref>
 				<StyledButton>
 					{/* TODO: need to add link to avatar pic */}
-					<StyledAvatar
-						alt={`${state.user_current}'s avatar`}
-						src={"noLinkYet"}
-					/>
+					<StyledAvatar alt={`${state.user_current}'s avatar`} src="/" />
 					{state.user_current}
 				</StyledButton>
 			</Link>
@@ -60,8 +50,6 @@ const Layout = (props) => {
 					rel="stylesheet"
 					href="https://fonts.googleapis.com/icon?family=Material+Icons"
 				/>
-				// TODO: activate when ready
-				{/* <script src="https://js.stripe.com/v3" /> */}
 			</Head>
 			<StyledAppBar color="primary">
 				<Nav>
@@ -78,7 +66,14 @@ const Layout = (props) => {
 			<Main component="main" maxWidth="xl">
 				{props.children}
 			</Main>
-			<Cart />
+			{/* 
+				// TODO: set cart drawer to persistent 
+				// TODO: add toggle to cart drawer 
+				// TODO: consider moving drawer component to layout 
+			*/}
+			<StyledDrawer variant="permanent" anchor="right">
+				<Cart />
+			</StyledDrawer>
 			<footer></footer>
 		</Flex>
 	);
@@ -91,6 +86,8 @@ export default Layout;
 // ******************
 // styles
 // ******************
+
+import { Main } from "../styles/elements";
 const Flex = styled.div`
 	display: flex;
 	flex-direction: flex;
@@ -122,6 +119,10 @@ const StyledButton = styled(Button)`
 	padding: 1rem;
 	color: white;
 `;
-const Main = styled(Container)`
-	padding: calc(4rem + 1rem) 1rem;
+const StyledDrawer = styled(Drawer)`
+	width: ${(props) => props.theme.drawer.width};
+	z-index: ${(props) => props.theme.drawer.zIndex};
+	.MuiDrawer-paper {
+		width: ${(props) => props.theme.drawer.width};
+	}
 `;

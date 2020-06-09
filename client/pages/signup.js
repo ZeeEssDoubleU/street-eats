@@ -22,6 +22,7 @@ import { Visibility, VisibilityOff } from "@material-ui/icons";
 // import store / utils
 import { saveCredsToCookies } from "../store/actions/auth";
 import useStore from "../store/useStore";
+import registerUser from "../store/actions/auth";
 
 // ******************
 // component
@@ -48,18 +49,7 @@ const signup = (props) => {
 
 	const onSubmit = async (event) => {
 		event.preventDefault();
-		try {
-			const response = await axios.post(
-				"http://localhost:1337/auth/local/register",
-				formData,
-			);
-			console.log("response_signup", response.data);
-
-			saveCredsToCookies(response.data, state, dispatch);
-			// sendEmailValidation();
-		} catch (error) {
-			console.error(error.response);
-		}
+		registerUser(state, dispatch);
 	};
 
 	const showPasswordIcon = (

@@ -23,6 +23,7 @@ import { Visibility, VisibilityOff } from "@material-ui/icons";
 // import store / utils
 import { saveCredsToCookies, getUser_current } from "../store/actions/auth";
 import useStore from "../store/useStore";
+import loginUser from "../store/actions/auth";
 
 // ******************
 // component
@@ -45,20 +46,7 @@ const login = (props) => {
 
 	const onSubmit = async (event) => {
 		event.preventDefault();
-		try {
-			const response = await axios.post(
-				"http://localhost:1337/auth/local",
-				formData,
-			);
-			console.log("response_login:", response.data);
-
-			await saveCredsToCookies(response.data, state, dispatch);
-
-			// navigate to restaurants page
-			Router.push("/restaurants");
-		} catch (error) {
-			console.error(error);
-		}
+		loginUser(state, dispatch);
 	};
 
 	const showPasswordIcon = (

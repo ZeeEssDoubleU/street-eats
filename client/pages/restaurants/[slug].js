@@ -4,15 +4,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 // import components
-import {
-	Grid,
-	Card,
-	CardContent,
-	CardMedia,
-	CardActionArea,
-	Typography,
-} from "@material-ui/core";
-import { CardActionButton } from "../../components/elements/CardActionButton";
+import { Grid, Typography } from "@material-ui/core";
+import ListingCard from "../../components/ListingCard";
 // import store
 import useStore from "../../store/useStore";
 import { addItem } from "../../store/actions/cart";
@@ -29,27 +22,16 @@ const restaurants = ({ restaurant, dishes }) => {
 		dishes &&
 		dishes.map((dish) => (
 			<Grid item key={dish.id}>
-				<Card>
-					<StyledActionArea component="div" disableRipple>
-						<CardImage image={`http://localhost:1337${dish.image.url}`} />
-						<CardContent>
-							<Typography variant="h5" component="h2" gutterBottom>
-								{dish.name}
-							</Typography>
-							<Typography>{dish.description}</Typography>
-						</CardContent>
-						<CardActionButton
-							variant="contained"
-							color="secondary"
-							onClick={() => {
-								const payload = { dish, restaurant };
-								addItem(payload, state, dispatch);
-							}}
-						>
-							Add to Cart
-						</CardActionButton>
-					</StyledActionArea>
-				</Card>
+				<ListingCard
+					image={`http://localhost:1337${dish.image.url}`}
+					name={dish.name}
+					description={dish.description}
+					buttonText="Add to Cart"
+					buttonClick={() => {
+						const payload = { dish, restaurant };
+						addItem(payload, state, dispatch);
+					}}
+				/>
 			</Grid>
 		));
 
@@ -78,20 +60,10 @@ export default restaurants;
 // styles
 // ******************
 
-const StyledGrid = styled.div`
-	display: grid;
-	grid-template-columns: repeat(auto-fit, 24rem);
-	justify-content: center;
-	grid-gap: 1rem;
-`;
+import { StyledGrid } from "../../styles/elements";
+
 const RestaurantName = styled.div`
 	place-self: center;
-`;
-const StyledActionArea = styled(CardActionArea)`
-	cursor: default;
-`;
-const CardImage = styled(CardMedia)`
-	height: 15rem;
 `;
 
 // ******************

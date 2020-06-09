@@ -11,5 +11,4 @@ import RestaurantList from "./restaurants";
 const index = (props) => {
 	return <div>This is the home page.</div>;
 };
-
 export default index;

@@ -47,3 +47,38 @@ export const removeCredsFromCookies = (state, dispatch) => {
 };
 
 export const getUser_current = () => Cookies.get("user_current") || null;
+
+export const loginUser = async (state, dispatch) => {
+	try {
+		const response = await axios.post(
+			"http://localhost:1337/auth/local",
+			formData,
+			setRequestHeaders(),
+		);
+		const credentials = response.data;
+		console.log("response_login:", credentials);
+
+		await saveCredsToCookies(credentials, state, dispatch);
+
+		// navigate to restaurants page
+		Router.push("/restaurants");
+	} catch (error) {
+		console.error(error);
+	}
+};
+export const registerUser = async (state, dispatch) => {
+	try {
+		const response = await axios.post(
+			"http://localhost:1337/auth/local/register",
+			formData,
+			setRequestHeaders(),
+		);
+		const credentials = response.data;
+		console.log("response_signup", credentials);
+
+		saveCredsToCookies(credentials, state, dispatch);
+		// sendEmailValidation();
+	} catch (error) {
+		console.error(error.response);
+	}
+};

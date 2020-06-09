@@ -1,17 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Link from "next/link";
 import styled from "styled-components";
 // import components
-import {
-	Grid,
-	Card,
-	CardContent,
-	CardMedia,
-	CardActionArea,
-	Typography,
-} from "@material-ui/core";
-import { CardActionButton } from "../../components/elements/CardActionButton";
+import { Grid } from "@material-ui/core";
+import CardActionButton from "../../components/CardActionButton";
+import ListingCard from "../../components/ListingCard";
 
 // ******************
 // component
@@ -22,28 +15,15 @@ const restaurants = ({ restaurants }) => {
 		restaurants &&
 		restaurants.map((restaurant) => (
 			<Grid item key={restaurant.id}>
-				<Card>
-					<StyledActionArea component="div" disableRipple>
-						<CardImage
-							image={`http://localhost:1337${restaurant.image[0].url}`}
-						/>
-						<CardContent>
-							<Typography variant="h5" component="h2" gutterBottom>
-								{restaurant.name}
-							</Typography>
-							<Typography>{restaurant.description}</Typography>
-						</CardContent>
-						<Link
-							as={`/restaurants/${restaurant.slug}`}
-							href={`/restaurants/[slug]`}
-							passHref
-						>
-							<CardActionButton variant="contained" color="secondary">
-								View
-							</CardActionButton>
-						</Link>
-					</StyledActionArea>
-				</Card>
+				<ListingCard
+					image={`http://localhost:1337${restaurant.image[0].url}`}
+					name={restaurant.name}
+					description={restaurant.description}
+					buttonText="View Menu"
+					hasLink
+					as={`/restaurants/${restaurant.slug}`}
+					href={`/restaurants/[slug]`}
+				/>
 			</Grid>
 		));
 
@@ -55,10 +35,10 @@ export default restaurants;
 // ******************
 // initial props
 // ******************
-export async function getStaticProps() {
+export const getStaticProps = async () => {
 	try {
-		const response = await axios.get("http://localhost:1337/restaurants");
-		const restaurants = response.data;
+		const { data } = await axios.get("http://localhost:1337/restaurants");
+		const restaurants = data;
 
 		return {
 			props: {
@@ -68,21 +48,10 @@ export async function getStaticProps() {
 	} catch (error) {
 		console.error(error);
 	}
-}
+};
 
 // ******************
 // styles
 // ******************
 
-const StyledGrid = styled.div`
-	display: grid;
-	grid-template-columns: repeat(auto-fit, 24rem);
-	justify-content: center;
-	grid-gap: 1rem;
-`;
-const StyledActionArea = styled(CardActionArea)`
-	cursor: default;
-`;
-const CardImage = styled(CardMedia)`
-	height: 15rem;
-`;
+import { StyledGrid } from "../../styles/elements";
