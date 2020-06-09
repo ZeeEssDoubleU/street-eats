@@ -5,7 +5,6 @@ import Cookies from "js-cookie";
 // import components
 import {
 	Container,
-	Card,
 	CardHeader,
 	CardContent,
 	CardActions,
@@ -18,6 +17,7 @@ import {
 	IconButton,
 } from "@material-ui/core";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
+import Card_withElevate from "../components/Card_withElevate";
 // import store / utils
 import { saveCredsToCookies, getUser_current } from "../store/actions/auth";
 import useStore from "../store/useStore";
@@ -66,7 +66,7 @@ const login = (props) => {
 
 	return (
 		<Container maxWidth="sm">
-			<StyledCard>
+			<Card_withElevate>
 				<CardHeader title="Login" />
 				<CardContent>
 					<Form autoComplete="off" id="form-login" onSubmit={onSubmit}>
@@ -120,7 +120,7 @@ const login = (props) => {
 						Test
 					</Button>
 				</StyledCardActions>
-			</StyledCard>
+			</Card_withElevate>
 		</Container>
 	);
 };
@@ -131,9 +131,6 @@ export default login;
 // styles
 // ******************
 
-const StyledCard = styled(Card)`
-	margin: 1rem 0;
-`;
 const StyledCardActions = styled(CardActions)`
 	padding: 1rem;
 `;

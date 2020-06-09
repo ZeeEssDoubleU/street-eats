@@ -4,14 +4,10 @@ import styled from "styled-components";
 import Link from "next/link";
 import { useRouter } from "next/router";
 // import components
-import {
-	Card,
-	CardHeader,
-	CardActionArea,
-	CardContent,
-} from "@material-ui/core";
+import { CardHeader, CardContent } from "@material-ui/core";
 import CardActionButton from "./CardActionButton";
 import CartCardItems from "./CartCardItems";
+import Card_withElevate from "./Card_withElevate";
 // import store
 import useStore from "../store/useStore";
 
@@ -28,20 +24,19 @@ const CartCard = (props) => {
 	const isAuthenticated = state.isAuthenticated
 		? {
 				pathname: "/checkout",
-				query: { restaurant: props.restaurant.slug },
+				query: { restaurant: props.restaurant?.slug },
 		  }
 		: "/login";
 
 	const displayCard = props.isEmpty ? (
 		// if card has empty prop, display empty text
-		<StyledCard>
+		<Card_withElevate>
 			<CardHeader title="Cart is empty!" />
 			<CardContent>Add some items to your shopping cart.</CardContent>
-		</StyledCard>
+		</Card_withElevate>
 	) : (
 		// else, display full card
-		<StyledCard key={props.restaurant.id}>
-			<StyledActionArea component="div" disableRipple>
+		<Card_withElevate key={props.restaurant.id}>
 				<CardHeader title={props.restaurant.name} />
 				<CardContent>
 					<CartCardItems restaurant={props.restaurant} />
@@ -58,8 +53,7 @@ const CartCard = (props) => {
 							: "Go to Checkout"}
 					</CardActionButton>
 				</Link>
-			</StyledActionArea>
-		</StyledCard>
+		</Card_withElevate>
 	);
 
 	return <>{displayCard}</>;
@@ -71,10 +65,3 @@ export default CartCard;
 // ******************
 // styles
 // ******************
-
-const StyledCard = styled(Card)`
-	margin: 1rem 0;
-`;
-const StyledActionArea = styled(CardActionArea)`
-	cursor: default;
-`;

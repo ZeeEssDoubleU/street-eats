@@ -18,31 +18,28 @@ const Cart = (props) => {
 
 	// TODO: NEED TO CREATE DISPLAY FOR PAGE (SINGLE RESTAURANT) ONLY
 
-	const cartList = () => {
-		if (state.cart) {
+	const cartList =
+		state.cart?.length === 0 ? (
 			// if cart length equals 0, display empty
-			if (state.cart.length === 0) {
-				return <CartCard isEmpty />;
-			}
+			<CartCard isEmpty />
+		) : (
 			// else, display cart list
-			else {
-				return state.cart
-					.filter((restaurant) =>
-						router.route === "/checkout"
-							? restaurant.slug === router.query.restaurant
-							: restaurant,
-					)
-					.map((restaurant) => <CartCard restaurant={restaurant} />);
-			}
-		}
-	};
-
+			state.cart
+				?.filter((restaurant) =>
+					router.route === "/checkout"
+						? restaurant.slug === router.query.restaurant
+						: restaurant,
+				)
+				.map((restaurant) => <CartCard restaurant={restaurant} />)
+		);
 	return (
 		<Main component="main">
-			<Typography variant="h4" component="h2" gutterBottom>
-				Shopping Cart:
-			</Typography>
-			{cartList()}
+			<StyledGrid>
+				<Typography variant="h4" component="h2" gutterBottom>
+					Shopping Cart:
+				</Typography>
+				{cartList}
+			</StyledGrid>
 		</Main>
 	);
 };
@@ -54,4 +51,4 @@ export default Cart;
 // styles
 // ******************
 
-import { Main } from "../styles/elements";
+import { Main, StyledGrid } from "../styles/elements";

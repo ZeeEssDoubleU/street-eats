@@ -18,22 +18,20 @@ const restaurants = ({ restaurant, dishes }) => {
 	const { state, dispatch } = useStore();
 	const router = useRouter();
 
-	const displayDishes =
-		dishes &&
-		dishes.map((dish) => (
-			<Grid item key={dish.id}>
-				<ListingCard
-					image={`http://localhost:1337${dish.image.url}`}
-					name={dish.name}
-					description={dish.description}
-					buttonText="Add to Cart"
-					buttonClick={() => {
-						const payload = { dish, restaurant };
-						addItem(payload, state, dispatch);
-					}}
-				/>
-			</Grid>
-		));
+	const displayDishes = dishes?.map((dish) => (
+		<Grid item key={dish.id}>
+			<ListingCard
+				image={`http://localhost:1337${dish.image.url}`}
+				name={dish.name}
+				description={dish.description}
+				buttonText="Add to Cart"
+				buttonClick={() => {
+					const payload = { dish, restaurant };
+					addItem(payload, state, dispatch);
+				}}
+			/>
+		</Grid>
+	));
 
 	// If the page is not yet generated, this will be displayed
 	// initially until getStaticProps() finishes running

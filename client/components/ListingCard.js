@@ -3,13 +3,8 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import Link from "next/link";
 // import components
-import {
-	Card,
-	CardContent,
-	CardMedia,
-	CardActionArea,
-	Typography,
-} from "@material-ui/core";
+import { CardContent, CardMedia, Typography } from "@material-ui/core";
+import Card_withElevate from "./Card_withElevate";
 import CardActionButton from "./CardActionButton";
 
 export const ListingCard = (props) => {
@@ -32,18 +27,16 @@ export const ListingCard = (props) => {
 	);
 
 	return (
-		<Card>
-			<StyledActionArea disableRipple>
-				<CardImage image={props.image} />
-				<CardContent>
-					<Typography variant="h5" component="h2" gutterBottom>
-						{props.name}
-					</Typography>
-					<Typography>{props.description}</Typography>
-				</CardContent>
-				{buttonType}
-			</StyledActionArea>
-		</Card>
+		<Card_withElevate>
+			<CardImage image={props.image} />
+			<CardContent>
+				<Typography variant="h5" component="h2" gutterBottom>
+					{props.name}
+				</Typography>
+				<Typography>{props.description}</Typography>
+			</CardContent>
+			{buttonType}
+		</Card_withElevate>
 	);
 };
 ListingCard.propTypes = {};
@@ -53,9 +46,6 @@ export default ListingCard;
 // styles
 // ******************
 
-const StyledActionArea = styled(CardActionArea)`
-	cursor: default;
-`;
 const CardImage = styled(CardMedia)`
 	height: 15rem;
 `;

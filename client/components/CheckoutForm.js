@@ -1,12 +1,8 @@
 import React, { useState } from "react";
 // import components
-import {
-	Card,
-	CardHeader,
-	CardActionArea,
-	CardContent,
-} from "@material-ui/core";
+import { CardHeader, CardContent } from "@material-ui/core";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import Card_withElevate from "./Card_withElevate";
 // import store / actions / etc
 import { paymentIntent_create } from "../store/actions/auth";
 
@@ -45,3 +41,7 @@ const CheckoutForm = () => {
 	);
 };
 export default CheckoutForm;
+
+// ******************
+// styles
+// ******************

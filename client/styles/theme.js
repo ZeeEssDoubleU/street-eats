@@ -9,7 +9,6 @@ export const theme = createMuiTheme({
 		secondary: deepOrange,
 	},
 	drawer: {
-		width: "24rem",
 		zIndex: 10,
 	},
 	button: {
@@ -19,5 +18,8 @@ export const theme = createMuiTheme({
 			borderColor: "rgba(0, 0, 0, 0.23)",
 			borderRightColor: "transparent",
 		},
+	},
+	card: {
+		width: "24rem",
 	},
 });

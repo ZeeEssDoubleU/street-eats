@@ -120,9 +120,9 @@ const StyledButton = styled(Button)`
 	color: white;
 `;
 const StyledDrawer = styled(Drawer)`
-	width: ${(props) => props.theme.drawer.width};
+	width: calc(${(props) => props.theme.card.width} + 2rem);
 	z-index: ${(props) => props.theme.drawer.zIndex};
 	.MuiDrawer-paper {
-		width: ${(props) => props.theme.drawer.width};
+		width: calc(${(props) => props.theme.card.width} + 2rem);
 	}
 `;

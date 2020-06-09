@@ -5,7 +5,6 @@ import styled from "styled-components";
 // import components
 import {
 	Container,
-	Card,
 	CardHeader,
 	CardContent,
 	CardActions,
@@ -18,6 +17,7 @@ import {
 	IconButton,
 } from "@material-ui/core";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
+import Card_withElevate from "../components/Card_withElevate";
 // import store / utils
 import { saveCredsToCookies } from "../store/actions/auth";
 import useStore from "../store/useStore";
@@ -70,7 +70,7 @@ const signup = (props) => {
 
 	return (
 		<Container maxWidth="sm">
-			<StyledCard>
+			<Card_withElevate>
 				<CardHeader title="Sign Up" />
 				<CardContent>
 					<Form
@@ -165,7 +165,7 @@ const signup = (props) => {
 						Go Back
 					</Button>
 				</StyledCardActions>
-			</StyledCard>
+			</Card_withElevate>
 		</Container>
 	);
 };
@@ -176,9 +176,6 @@ export default signup;
 // styles
 // ******************
 
-const StyledCard = styled(Card)`
-	margin: 1rem 0;
-`;
 const StyledCardActions = styled(CardActions)`
 	padding: 1rem;
 `;

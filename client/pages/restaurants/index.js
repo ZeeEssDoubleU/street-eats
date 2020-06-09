@@ -11,21 +11,19 @@ import ListingCard from "../../components/ListingCard";
 // ******************
 
 const restaurants = ({ restaurants }) => {
-	const displayRestaurants =
-		restaurants &&
-		restaurants.map((restaurant) => (
-			<Grid item key={restaurant.id}>
-				<ListingCard
-					image={`http://localhost:1337${restaurant.image[0].url}`}
-					name={restaurant.name}
-					description={restaurant.description}
-					buttonText="View Menu"
-					hasLink
-					as={`/restaurants/${restaurant.slug}`}
-					href={`/restaurants/[slug]`}
-				/>
-			</Grid>
-		));
+	const displayRestaurants = restaurants?.map((restaurant) => (
+		<Grid item key={restaurant.id}>
+			<ListingCard
+				image={`http://localhost:1337${restaurant.image[0].url}`}
+				name={restaurant.name}
+				description={restaurant.description}
+				buttonText="View Menu"
+				hasLink
+				as={`/restaurants/${restaurant.slug}`}
+				href={`/restaurants/[slug]`}
+			/>
+		</Grid>
+	));
 
 	return <StyledGrid>{displayRestaurants}</StyledGrid>;
 };
