@@ -1,4 +1,11 @@
 import React, { useState } from "react";
+// import components
+import {
+	Card,
+	CardHeader,
+	CardActionArea,
+	CardContent,
+} from "@material-ui/core";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 // import store / actions / etc
 import { paymentIntent_create } from "../store/actions/auth";

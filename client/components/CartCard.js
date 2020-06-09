@@ -19,7 +19,7 @@ import useStore from "../store/useStore";
 // component
 // ******************
 
-const CartCard = ({ restaurant }) => {
+const CartCard = (props) => {
 	const { state, dispatch } = useStore();
 	const router = useRouter();
 
@@ -28,16 +28,23 @@ const CartCard = ({ restaurant }) => {
 	const isAuthenticated = state.isAuthenticated
 		? {
 				pathname: "/checkout",
-				query: { restaurant: restaurant.slug },
+				query: { restaurant: props.restaurant.slug },
 		  }
 		: "/login";
 
-	return (
-		<StyledCard key={restaurant.id}>
+	const displayCard = props.isEmpty ? (
+		// if card has empty prop, display empty text
+		<StyledCard>
+			<CardHeader title="Cart is empty!" />
+			<CardContent>Add some items to your shopping cart.</CardContent>
+		</StyledCard>
+	) : (
+		// else, display full card
+		<StyledCard key={props.restaurant.id}>
 			<StyledActionArea component="div" disableRipple>
-				<CardHeader title={restaurant.name} />
+				<CardHeader title={props.restaurant.name} />
 				<CardContent>
-					<CartCardItems restaurant={restaurant} />
+					<CartCardItems restaurant={props.restaurant} />
 				</CardContent>
 				{/* // TODO: isAuthenticted must be true to place order */}
 				<Link href={isAuthenticated} passHref>
@@ -54,6 +61,8 @@ const CartCard = ({ restaurant }) => {
 			</StyledActionArea>
 		</StyledCard>
 	);
+
+	return <>{displayCard}</>;
 };
 
 CartCard.propTypes = {};

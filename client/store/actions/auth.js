@@ -13,9 +13,7 @@ export const setRequestHeaders = () => {
 	const token = Cookies.get("jwt");
 
 	return {
-		headers: {
-			Authorization: token ? `Bearer ${token}` : null,
-		},
+		headers: token ? { Authorization: `Bearer ${token}` } : null,
 	};
 };
 
@@ -54,6 +52,7 @@ export const loginUser = async (formData, state, dispatch) => {
 		const response = await axios.post(
 			"http://localhost:1337/auth/local",
 			formData,
+			setRequestHeaders(),
 		);
 		const credentials = response.data;
 		console.log("response_login:", credentials);
@@ -71,6 +70,7 @@ export const registerUser = async (formData, state, dispatch) => {
 		const response = await axios.post(
 			"http://localhost:1337/auth/local/register",
 			formData,
+			setRequestHeaders(),
 		);
 		const credentials = response.data;
 		console.log("response_signup", credentials);

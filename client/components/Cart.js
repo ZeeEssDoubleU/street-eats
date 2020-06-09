@@ -17,22 +17,32 @@ const Cart = (props) => {
 	const router = useRouter();
 
 	// TODO: NEED TO CREATE DISPLAY FOR PAGE (SINGLE RESTAURANT) ONLY
-	const cartList =
-		state.cart &&
-		state.cart
-			.filter((restaurant) =>
-				router.route === "/checkout"
-					? restaurant.slug === router.query.restaurant
-					: restaurant,
-			)
-			.map((restaurant) => <CartCard restaurant={restaurant} />);
+
+	const cartList = () => {
+		if (state.cart) {
+			// if cart length equals 0, display empty
+			if (state.cart.length === 0) {
+				return <CartCard isEmpty />;
+			}
+			// else, display cart list
+			else {
+				return state.cart
+					.filter((restaurant) =>
+						router.route === "/checkout"
+							? restaurant.slug === router.query.restaurant
+							: restaurant,
+					)
+					.map((restaurant) => <CartCard restaurant={restaurant} />);
+			}
+		}
+	};
 
 	return (
 		<Main component="main">
 			<Typography variant="h4" component="h2" gutterBottom>
 				Shopping Cart:
 			</Typography>
-			{cartList}
+			{cartList()}
 		</Main>
 	);
 };
