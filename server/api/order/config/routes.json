@@ -63,6 +63,14 @@
       "config": {
         "policies": []
       }
+    },
+    {
+      "method": "POST",
+      "path": "/orders/payment-intent/update",
+      "handler": "order.paymentIntent_update",
+      "config": {
+        "policies": []
+      }
     }
   ]
 }

@@ -4,14 +4,10 @@ import { setRequestHeaders } from "./auth";
 export const actionTypes_cart = {
 	CREATE_PAYMENT_INTENT: "CREATE_PAYMENT_INTENT",
 	GET_PAYMENT_INTENT: "GET_PAYMENT_INTENT",
+	UPDATE_PAYMENT_INTENT: "UPDATE_PAYMENT_INTENT",
 };
 
-export const paymentIntent_create = async (checkoutSlug, state, dispatch) => {
-	const restaurant = await state.cart?.filter(
-		(restaurant) => restaurant.slug === checkoutSlug,
-	);
-	const items = await restaurant[0]?.items;
-
+export const paymentIntent_create = async (items, dispatch) => {
 	try {
 		const response = await axios.post(
 			"http://localhost:1337/orders/payment-intent/create",
@@ -33,11 +29,15 @@ export const paymentIntent_create = async (checkoutSlug, state, dispatch) => {
 		console.error(error);
 	}
 };
-export const paymentIntent_retrieve = async (paymentIntent_id, state, dispatch) => {
+export const paymentIntent_retrieve = async (
+	paymentIntent_id,
+	items,
+	dispatch,
+) => {
 	try {
 		const response = await axios.post(
 			"http://localhost:1337/orders/payment-intent/retrieve",
-			{ paymentIntent_id },
+			{ paymentIntent_id, items },
 			setRequestHeaders(),
 		);
 		const paymentIntent = response.data;
@@ -45,6 +45,32 @@ export const paymentIntent_retrieve = async (paymentIntent_id, state, dispatch) 
 
 		dispatch({
 			type: actionTypes_cart.GET_PAYMENT_INTENT,
+			payload: null,
+		});
+
+		// TODO: consider only returning client secret
+		// return payment intent client_secret
+		return paymentIntent;
+	} catch (error) {
+		console.error(error);
+	}
+};
+export const paymentIntent_update = async (
+	paymentIntent_id,
+	items,
+	dispatch,
+) => {
+	try {
+		const response = await axios.post(
+			"http://localhost:1337/orders/payment-intent/update",
+			{ paymentIntent_id, items },
+			setRequestHeaders(),
+		);
+		const paymentIntent = response.data;
+		const { client_secret } = paymentIntent;
+
+		dispatch({
+			type: actionTypes_cart.UPDATE_PAYMENT_INTENT,
 			payload: null,
 		});
 

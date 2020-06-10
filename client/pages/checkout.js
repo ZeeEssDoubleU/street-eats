@@ -11,6 +11,7 @@ import useStore from "../store/useStore";
 import {
 	paymentIntent_create,
 	paymentIntent_retrieve,
+	paymentIntent_update,
 } from "../store/actions/order";
 import { setRequestHeaders } from "../store/actions/auth";
 // import api keys
@@ -28,27 +29,36 @@ const checkout = (props) => {
 	const router = useRouter();
 	const { state, dispatch } = useStore();
 
+	const filterCart = async () => {
+		// grab page slug for cart filtering
+		const checkoutSlug = router.query.restaurant;
+
+		// declare checkout items
+		const restaurant = await state.cart?.filter(
+			(restaurant) => restaurant.slug === checkoutSlug,
+		);
+		const items = await restaurant[0]?.items;
+		return items;
+	};
+
 	const getPaymentIntent = async () => {
+		const items = await filterCart();
+
 		// check if payment intent already exists
 		const paymentIntent_id = await Cookies.get("paymentIntent_id");
 		let paymentIntent;
 
-		// if exists, GET payment intent
+		// if intent exists, GET payment intent
 		if (paymentIntent_id) {
 			paymentIntent = await paymentIntent_retrieve(
 				paymentIntent_id,
-				state,
+				items,
 				dispatch,
 			);
 		}
-		// it not, CREATE payment intent
+		// it no intent, CREATE payment intent
 		else {
-			const checkoutSlug = router.query.restaurant;
-			paymentIntent = await paymentIntent_create(
-				checkoutSlug,
-				state,
-				dispatch,
-			);
+			paymentIntent = await paymentIntent_create(items, dispatch);
 
 			// set payment intent id to cookie for future retrieval
 			Cookies.set("paymentIntent_id", paymentIntent.id);
@@ -61,8 +71,9 @@ const checkout = (props) => {
 		// redirect login if not logged in
 		if (!state.isAuthenticated) {
 			Router.push("/login");
-			// redirect to restaurants if no cart
-		} else if (state.cart.length === 0) {
+		}
+		// redirect to restaurants if no cart
+		else if (state.cart.length === 0) {
 			Router.back();
 		}
 	}, []);
@@ -71,7 +82,7 @@ const checkout = (props) => {
 		if (router.route === "/checkout") {
 			getPaymentIntent();
 		}
-	}, [router.route]);
+	}, [router.route, state.cart]);
 
 	return (
 		<StripeElementsProvider stripe={stripePromise}>
