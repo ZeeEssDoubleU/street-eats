@@ -30,7 +30,9 @@ const Cart = (props) => {
 						? restaurant.slug === router.query.restaurant
 						: restaurant,
 				)
-				.map((restaurant) => <CartCard restaurant={restaurant} />)
+				.map((restaurant) => (
+					<CartCard key={restaurant.id} restaurant={restaurant} />
+				))
 		);
 	return (
 		<Main component="main">

@@ -18,6 +18,7 @@ import {
 } from "@material-ui/core";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import Card_withElevate from "../components/Card_withElevate";
+import CardActionButton from "../components/CardActionButton";
 // import store / utils
 import { saveCredsToCookies } from "../store/actions/auth";
 import useStore from "../store/useStore";
@@ -39,14 +40,14 @@ const signup = (props) => {
 	});
 
 	const handleChange = (target) => (event) => {
-		const newData = {
+		const updateData = {
 			...formData,
 			[target]: event.target.value,
 		};
-		setFormData(newData);
+		setFormData(updateData);
 	};
 
-	const onSubmit = (event) => {
+	const handleSubmit = (event) => {
 		event.preventDefault();
 		registerUser(formData, state, dispatch);
 	};
@@ -73,11 +74,10 @@ const signup = (props) => {
 			<Card_withElevate>
 				<CardHeader title="Sign Up" />
 				<CardContent>
-					<Form
-						noValidate
+					<form
 						autoComplete="off"
 						id="form-signup"
-						onSubmit={onSubmit}
+						onSubmit={handleSubmit}
 					>
 						<TextField
 							label="First Name"
@@ -123,7 +123,7 @@ const signup = (props) => {
 						>
 							<InputLabel htmlFor="password">Password</InputLabel>
 							<FilledInput
-								id="conpassword"
+								id="password"
 								type={formData.password_show ? "text" : "password"}
 								endAdornment={showPasswordIcon}
 								value={formData.password}
@@ -149,21 +149,20 @@ const signup = (props) => {
 								onChange={handleChange("password_confirm")}
 							/>
 						</FormControl>
-					</Form>
+					</form>
 				</CardContent>
 				<StyledCardActions>
-					<Button
+					<CardActionButton
 						variant="contained"
 						color="primary"
-						size="large"
 						form="form-signup"
 						type="submit"
 					>
 						Register
-					</Button>
-					<Button color="primary" onClick={() => Router.back()}>
+					</CardActionButton>
+					<CardActionButton color="primary" onClick={() => Router.back()}>
 						Go Back
-					</Button>
+					</CardActionButton>
 				</StyledCardActions>
 			</Card_withElevate>
 		</Container>
@@ -176,10 +175,4 @@ export default signup;
 // styles
 // ******************
 
-const StyledCardActions = styled(CardActions)`
-	padding: 1rem;
-`;
-const Form = styled.form`
-	display: flex;
-	flex-wrap: wrap;
-`;
+import { StyledCardActions } from "../styles/elements";

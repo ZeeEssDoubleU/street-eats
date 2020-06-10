@@ -22,7 +22,6 @@ const Card_withElevate = (props) => {
 				focusRef.current = false;
 				setRaised(false);
 			}}
-			onFo
 		>
 			{props.children}
 		</Card>

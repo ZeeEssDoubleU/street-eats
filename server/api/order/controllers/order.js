@@ -5,29 +5,54 @@
  * to customize this controller
  */
 
+// *** load keys and initiate stripe connection
 const keys = require("../../../../config/keys");
-const { sanitizeEntity } = require("strapi-utils");
 const stripe = require("stripe")(keys.STRIPE_SECRET);
 
-module.exports = {
-  async paymentIntent_create(ctx) {
-    const { items } = ctx.req.body;
+// *** create payment intent
+const paymentIntent_create = async (ctx) => {
+  const dishes = ctx.request.body;
+  console.log("DISHES:", dishes);
 
-    console.log("CONTEXT", ctx.req.body);
-    console.log("ITEMS", items);
+  // figure price of dishes
+  const reducer = (accumulator, currentValue) => accumulator + currentValue;
+  const amount =
+    dishes && dishes.map((dish) => dish.price * dish.quantity).reduce(reducer);
 
+  try {
     // charge the customer
-    try {
-      const paymentIntent = await stripe.paymentIntents.create({
-        amount: 50 * 100, // calculated in cents (x100 to get dollars)
-        currency: "usd",
-        // Verify your integration in this guide by including this parameter
-        metadata: { integration_check: "accept_a_payment" },
-      });
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: amount * 100, // calculated in cents (x100 to get dollars)
+      currency: "usd",
+      // Verify your integration in this guide by including this parameter
+      metadata: { integration_check: "accept_a_payment" },
+    });
 
-      return { client_secret: paymentIntent.client_secret };
-    } catch (error) {
-      console.error(error);
-    }
-  },
+    // TODO: consider only returning client secret and id
+    // return { client_secret: paymentIntent.client_secret };
+    return paymentIntent;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+// *** get payment intent
+const paymentIntent_retrieve = async (ctx) => {
+  const { paymentIntent_id } = ctx.request.body;
+
+  try {
+    const paymentIntent = await stripe.paymentIntents.retrieve(
+      paymentIntent_id
+    );
+
+    // TODO: consider only returning client secret
+    return paymentIntent;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+module.exports = {
+  paymentIntent_create,
+  paymentIntent_retrieve,
 };

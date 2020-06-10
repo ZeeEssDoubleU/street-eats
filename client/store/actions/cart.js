@@ -16,3 +16,6 @@ export const removeItem = (item, state, dispatch) => {
 		payload: item,
 	});
 };
+
+export const getSavedCart = () =>
+	JSON.parse(localStorage.getItem("cart")) || [];

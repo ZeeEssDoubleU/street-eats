@@ -2,7 +2,7 @@ import isEmpty from "lodash/fp/isEmpty";
 import Cookies from "js-cookie";
 // import actions / utils
 import { actionTypes_auth, getUser_current } from "./actions/auth";
-import { actionTypes_cart } from "./actions/cart";
+import { actionTypes_cart, getSavedCart } from "./actions/cart";
 import { Restaurant } from "@material-ui/icons";
 
 // ******************
@@ -13,8 +13,7 @@ export const initState =
 		? {
 				isAuthenticated: !isEmpty(getUser_current()),
 				user_current: getUser_current(),
-				cart: [],
-				checkout: null,
+				cart: getSavedCart(),
 		  }
 		: {};
 

@@ -37,11 +37,11 @@ const CartCard = (props) => {
 	) : (
 		// else, display full card
 		<Card_withElevate key={props.restaurant.id}>
-				<CardHeader title={props.restaurant.name} />
-				<CardContent>
-					<CartCardItems restaurant={props.restaurant} />
-				</CardContent>
-				{/* // TODO: isAuthenticted must be true to place order */}
+			<CardHeader title={props.restaurant.name} />
+			<CardContent>
+				<CartCardItems restaurant={props.restaurant} />
+			</CardContent>
+			<StyledCardActions>
 				<Link href={isAuthenticated} passHref>
 					<CardActionButton
 						variant="contained"
@@ -53,6 +53,7 @@ const CartCard = (props) => {
 							: "Go to Checkout"}
 					</CardActionButton>
 				</Link>
+			</StyledCardActions>
 		</Card_withElevate>
 	);
 
@@ -65,3 +66,5 @@ export default CartCard;
 // ******************
 // styles
 // ******************
+
+import { StyledCardActions } from "../styles/elements";

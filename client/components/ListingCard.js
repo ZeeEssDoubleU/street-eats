@@ -35,7 +35,7 @@ export const ListingCard = (props) => {
 				</Typography>
 				<Typography>{props.description}</Typography>
 			</CardContent>
-			{buttonType}
+			<StyledCardActions>{buttonType}</StyledCardActions>
 		</Card_withElevate>
 	);
 };
@@ -45,6 +45,8 @@ export default ListingCard;
 // ******************
 // styles
 // ******************
+
+import { StyledCardActions } from "../styles/elements";
 
 const CardImage = styled(CardMedia)`
 	height: 15rem;

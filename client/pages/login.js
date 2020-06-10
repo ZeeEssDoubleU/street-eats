@@ -7,8 +7,6 @@ import {
 	Container,
 	CardHeader,
 	CardContent,
-	CardActions,
-	Button,
 	FormControl,
 	FilledInput,
 	InputLabel,
@@ -18,6 +16,7 @@ import {
 } from "@material-ui/core";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import Card_withElevate from "../components/Card_withElevate";
+import CardActionButton from "../components/CardActionButton";
 // import store / utils
 import { saveCredsToCookies, getUser_current } from "../store/actions/auth";
 import useStore from "../store/useStore";
@@ -35,14 +34,14 @@ const login = (props) => {
 	});
 
 	const handleChange = (target) => (event) => {
-		const newData = {
+		const updateData = {
 			...formData,
 			[target]: event.target.value,
 		};
-		setFormData(newData);
+		setFormData(updateData);
 	};
 
-	const onSubmit = (event) => {
+	const handleSubmit = (event) => {
 		event.preventDefault();
 		loginUser(formData, state, dispatch);
 	};
@@ -64,12 +63,13 @@ const login = (props) => {
 		</InputAdornment>
 	);
 
+	// TODO: consider adding other provider logins (ie facebook, google, etc)
 	return (
 		<Container maxWidth="sm">
 			<Card_withElevate>
 				<CardHeader title="Login" />
 				<CardContent>
-					<Form autoComplete="off" id="form-login" onSubmit={onSubmit}>
+					<form autoComplete="off" id="form-login" onSubmit={handleSubmit}>
 						<TextField
 							required
 							label="Email"
@@ -89,36 +89,35 @@ const login = (props) => {
 						>
 							<InputLabel htmlFor="password">Password</InputLabel>
 							<FilledInput
-								id="conpassword"
+								id="password"
 								type={formData.password_show ? "text" : "password"}
 								endAdornment={showPasswordIcon}
 								value={formData.password}
 								onChange={handleChange("password")}
 							/>
 						</FormControl>
-					</Form>
+					</form>
 				</CardContent>
 				<StyledCardActions>
-					<Button
+					<CardActionButton
 						variant="contained"
 						color="primary"
-						size="large"
 						form="form-login"
 						type="submit"
 					>
 						Login
-					</Button>
+					</CardActionButton>
 					<Link href="/signup" passHref>
-						<Button color="primary">Sign Up</Button>
+						<CardActionButton color="primary">Sign Up</CardActionButton>
 					</Link>
 					{/* // TODO: remove when ready */}
-					<Button
+					<CardActionButton
 						onClick={() => {
 							console.log("cookies_test:", Cookies.get());
 						}}
 					>
 						Test
-					</Button>
+					</CardActionButton>
 				</StyledCardActions>
 			</Card_withElevate>
 		</Container>
@@ -131,10 +130,4 @@ export default login;
 // styles
 // ******************
 
-const StyledCardActions = styled(CardActions)`
-	padding: 1rem;
-`;
-const Form = styled.form`
-	display: flex;
-	flex-wrap: wrap;
-`;
+import { StyledCardActions } from "../styles/elements";
