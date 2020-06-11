@@ -70,32 +70,27 @@ const login = (props) => {
 				<CardHeader title="Login" />
 				<CardContent>
 					<form autoComplete="off" id="form-login" onSubmit={handleSubmit}>
-						<TextField
-							required
-							label="Email"
-							variant="filled"
-							type="email"
-							fullWidth
-							margin="normal"
-							value={formData.identifier}
-							onChange={handleChange("identifier")}
-						/>
-						{/* custom password input */}
-						<FormControl
-							required
-							fullWidth
-							margin="normal"
-							variant="filled"
-						>
-							<InputLabel htmlFor="password">Password</InputLabel>
-							<FilledInput
-								id="password"
-								type={formData.password_show ? "text" : "password"}
-								endAdornment={showPasswordIcon}
-								value={formData.password}
-								onChange={handleChange("password")}
+						<Grid>
+							<TextField
+								required
+								label="Email"
+								variant="filled"
+								type="email"
+								value={formData.identifier}
+								onChange={handleChange("identifier")}
 							/>
-						</FormControl>
+							{/* custom password input */}
+							<FormControl required fullWidth variant="filled">
+								<InputLabel htmlFor="password">Password</InputLabel>
+								<FilledInput
+									id="password"
+									type={formData.password_show ? "text" : "password"}
+									endAdornment={showPasswordIcon}
+									value={formData.password}
+									onChange={handleChange("password")}
+								/>
+							</FormControl>
+						</Grid>
 					</form>
 				</CardContent>
 				<StyledCardActions>
@@ -131,3 +126,8 @@ export default login;
 // ******************
 
 import { StyledCardActions } from "../styles/elements";
+
+const Grid = styled.div`
+	display: grid;
+	grid-gap: ${(props) => props.theme.spacing(3) + "px"};
+`;

@@ -15,19 +15,19 @@ const CardCardItems = ({ restaurant }) => {
 	const { state, dispatch } = useStore();
 
 	return (
-		<>
+		<Grid>
 			<Typography variant="h6" gutterBottom>
 				Items:
 			</Typography>
 			{restaurant.items.map((item) => (
-				<ItemGroup key={item.id}>
+				<div key={item.id}>
 					<GridBetween>
 						<Typography>{item.name}</Typography>
 						<Typography>
 							{item.quantity} x ${item.price}
 						</Typography>
 					</GridBetween>
-					<GridRight>
+					<GridLeft>
 						<ButtonGroup>
 							<ItemCountButton
 								onClick={() => {
@@ -49,14 +49,14 @@ const CardCardItems = ({ restaurant }) => {
 								+
 							</ItemCountButton>
 						</ButtonGroup>
-					</GridRight>
-				</ItemGroup>
+					</GridLeft>
+				</div>
 			))}
 			<GridBetween>
 				<Typography variant="h6">Total:</Typography>
 				<Typography variant="h6">${restaurant.items_total}</Typography>
 			</GridBetween>
-		</>
+		</Grid>
 	);
 };
 
@@ -67,16 +67,17 @@ export default CardCardItems;
 // styles
 // ******************
 
-const ItemGroup = styled.div`
-	margin-bottom: 1rem;
+const Grid = styled.div`
+	display: grid;
+	grid-gap: ${(props) => props.theme.spacing(2) + "px"};
 `;
 const GridBetween = styled.div`
 	display: grid;
 	grid-template-columns: auto auto;
-	grid-gap: 1rem;
+	grid-gap: ${(props) => props.theme.spacing(2) + "px"};
 	justify-content: space-between;
 `;
-const GridRight = styled.div`
+const GridLeft = styled.div`
 	display: grid;
 	justify-content: left;
 `;

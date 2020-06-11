@@ -18,7 +18,7 @@ export const StyledGrid = styled.div`
 		${(props) => props.theme.card.width}
 	);
 	justify-content: center;
-	grid-gap: 1rem;
+	grid-gap: ${(props) => props.theme.spacing(2) + "px"};
 `;
 export const StyledCard = styled(Card)`
 	margin: 1rem 0;

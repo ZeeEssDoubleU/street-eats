@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 // import components
 import {
@@ -62,46 +62,49 @@ const CheckoutForm = () => {
 						id="form-billing"
 						onSubmit={handleSubmit}
 					>
-						<TextField
-							required
-							label="Full Name"
-							variant="filled"
-							fullWidth
-							margin="normal"
-							value={paymentInfo.name}
-							onChange={handleChange("name")}
-						/>
-						<TextField
-							required
-							label="Address"
-							variant="filled"
-							fullWidth
-							margin="normal"
-							value={paymentInfo.address}
-							onChange={handleChange("address")}
-						/>
-						<TextField
-							required
-							label="City"
-							variant="filled"
-							fullWidth
-							margin="normal"
-							value={paymentInfo.city}
-							onChange={handleChange("city")}
-						/>
-						<TextField
-							required
-							label="Postal Code"
-							variant="filled"
-							fullWidth
-							margin="normal"
-							value={paymentInfo.postalCode}
-							onChange={handleChange("postalCode")}
-						/>
-						<Grid container spacing={2}>
+						<Grid container spacing={3}>
+							<Grid item xs={12}>
+								<TextField
+									required
+									label="Full Name"
+									variant="filled"
+									fullWidth
+									value={paymentInfo.name}
+									onChange={handleChange("name")}
+								/>
+							</Grid>
+							<Grid item xs={12}>
+								<TextField
+									required
+									label="Address"
+									variant="filled"
+									fullWidth
+									value={paymentInfo.address}
+									onChange={handleChange("address")}
+								/>
+							</Grid>
+							<Grid item xs={12}>
+								<TextField
+									required
+									label="City"
+									variant="filled"
+									fullWidth
+									value={paymentInfo.city}
+									onChange={handleChange("city")}
+								/>
+							</Grid>
+							<Grid item xs={12}>
+								<TextField
+									required
+									label="Postal Code"
+									variant="filled"
+									fullWidth
+									value={paymentInfo.postalCode}
+									onChange={handleChange("postalCode")}
+								/>
+							</Grid>
 							<Grid item xs={12} md={6}>
 								<TextField
-									fullWidth
 									required
 									InputProps={{
 										inputComponent: StripeInput,
@@ -110,12 +113,11 @@ const CheckoutForm = () => {
 									InputLabelProps={{ shrink: true }}
 									label="Card Number"
 									variant="filled"
-									margin="normal"
+									fullWidth
 								/>
 							</Grid>
 							<Grid item xs={6} md={3}>
 								<TextField
-									fullWidth
 									required
 									InputProps={{
 										inputComponent: StripeInput,
@@ -123,12 +125,11 @@ const CheckoutForm = () => {
 									}}
 									InputLabelProps={{ shrink: true }}
 									variant="filled"
-									margin="normal"
+									fullWidth
 								/>
 							</Grid>
 							<Grid item xs={6} md={3}>
 								<TextField
-									fullWidth
 									required
 									InputProps={{
 										inputComponent: StripeInput,
@@ -137,7 +138,7 @@ const CheckoutForm = () => {
 									InputLabelProps={{ shrink: true }}
 									label="Expiry"
 									variant="filled"
-									margin="normal"
+									fullWidth
 								/>
 							</Grid>
 						</Grid>
