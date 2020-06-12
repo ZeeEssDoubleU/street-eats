@@ -14,14 +14,15 @@ import { removeCredsFromCookies } from "../store/actions/auth";
 // ******************
 const Layout = (props) => {
 	const { state, dispatch } = useStore();
+	const currentUser = state.user_current;
 
 	const navMenuItems = state.isAuthenticated ? (
 		<>
 			<Link href="/" passHref>
 				<StyledButton>
 					{/* TODO: need to add link to avatar pic */}
-					<StyledAvatar alt={`${state.user_current}'s avatar`} src="/" />
-					{state.user_current}
+					<StyledAvatar alt={`${currentUser}'s avatar`} src="/" />
+					<div>{currentUser}</div>
 				</StyledButton>
 			</Link>
 			<StyledButton onClick={() => removeCredsFromCookies(state, dispatch)}>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import Router from "next/router";
+import Cookies from "js-cookie";
 // import components
 import {
 	Container,
@@ -29,14 +30,22 @@ import { paymentIntent_create } from "../store/actions/auth";
 const CheckoutForm = ({ paymentIntent }) => {
 	const stripe = useStripe();
 	const elements = useElements();
-	const [loading, setLoading] = useState(false);
-
+	const [paymentStatus, setPaymentStatus] = useState();
 	const [paymentInfo, setPaymentInfo] = useState({
 		name: "",
 		address: "",
 		city: "",
-		postalCode: "",
+		state: "",
+		postal_code: "",
 	});
+
+	useEffect(() => {
+		if (!stripe || !elements) {
+			setPaymentStatus("loading");
+		} else {
+			setPaymentStatus("");
+		}
+	}, [!stripe, !elements]);
 
 	const handleChange = (target) => (event) => {
 		const updateInfo = {
@@ -49,8 +58,11 @@ const CheckoutForm = ({ paymentIntent }) => {
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 
+		// if stripe or elments have NOT loaded, disable submission
+		if (!stripe || !elements) return;
+
 		try {
-			// setLoading(true);
+			setPaymentStatus("processing");
 			const response = await stripe.confirmCardPayment(
 				paymentIntent.client_secret,
 				{
@@ -58,31 +70,57 @@ const CheckoutForm = ({ paymentIntent }) => {
 						card: elements.getElement(CardNumberElement),
 						billing_details: {
 							name: paymentInfo.name,
-							address: paymentInfo.address,
+							address: {
+								city: paymentInfo.city,
+								line1: paymentInfo.address,
+								postal_code: paymentInfo.postal_code,
+								state: paymentInfo.state,
+							},
 						},
 					},
 				},
 			);
-			setLoading(response ? true : false);
+			console.log("Payment is processing...");
 
-			// The payment has been processed!
-			if (result.paymentIntent.status === "succeeded") {
-				// setLoading(false);
+			if (response.error) {
+				// show error to your customer (e.g., insufficient funds)
+				console.error(response.error.message);
+				setPaymentStatus("error");
+			} else {
+				// The payment has been processed!
+				if (response.paymentIntent.status === "succeeded") {
+					// Show a success message to your customer
+					console.log("Payment success!");
+					// There's a risk of the customer closing the window before callback execution.
+					// Set up a webhook or plugin to listen for the payment_intent.succeeded event that handles any business critical post-payment actions.
 
-				// Show a success message to your customer
-				console.log("payment result:", result);
+					// destroy paymentIntent cookie to prevent future use (already succeeded)
+					Cookies.remove("paymentIntent_id");
 
-				// There's a risk of the customer closing the window before callback execution
-				// Set up a webhook or plugin to listen for the payment_intent.succeeded event that handles any business critical post-payment actions.
+					// TODO: need to delete cart upon success
+				}
 			}
 		} catch (error) {
 			console.error(error);
 		}
 	};
 
-	return loading ? (
-		<div>Loading...</div>
-	) : (
+	const orderButtonText = (paymentStatus) => {
+		switch (paymentStatus) {
+			case "loading":
+				return "Wait...";
+			case "processing":
+				return "Processing...";
+			case "success":
+				return "Payment Success!";
+			case "error":
+				return "Try Again";
+			default:
+				return "Order Now";
+		}
+	};
+
+	return (
 		<Container maxWidth="sm">
 			<Card_withElevate>
 				<CardHeader title="Billing Information:" />
@@ -139,8 +177,8 @@ const CheckoutForm = ({ paymentIntent }) => {
 									label="Zip Code"
 									variant="filled"
 									fullWidth
-									value={paymentInfo.postalCode}
-									onChange={handleChange("postalCode")}
+									value={paymentInfo.postal_code}
+									onChange={handleChange("postal_code")}
 								/>
 							</Grid>
 							<Grid item xs={12} md={6}>
@@ -191,9 +229,14 @@ const CheckoutForm = ({ paymentIntent }) => {
 						variant="contained"
 						type="submit"
 						form="form-billing"
-						disabled={!stripe || !elements ? true : false}
+						disabled={
+							paymentStatus === "loading" ||
+							paymentStatus === "processing"
+								? true
+								: false
+						}
 					>
-						Place Order
+						{orderButtonText(paymentStatus)}
 					</CardActionButton>
 					<CardActionButton onClick={() => Router.back()}>
 						Cancel
