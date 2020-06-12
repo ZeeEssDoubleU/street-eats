@@ -2,6 +2,8 @@ import jwt_decode from "jwt-decode";
 import Cookies from "js-cookie";
 import Router from "next/router";
 import axios from "axios";
+// import urls
+import keys from "../../../config/keys";
 
 export const actionTypes_auth = {
 	SET_CURRENT_USER: "SET_CURRENT_USER",
@@ -50,7 +52,7 @@ export const getUser_current = () => Cookies.get("user_current") || null;
 export const loginUser = async (formData, state, dispatch) => {
 	try {
 		const response = await axios.post(
-			"http://localhost:1337/auth/local",
+			`${keys.API_DOMAIN}/auth/local`,
 			formData,
 			setRequestHeaders(),
 		);
@@ -68,7 +70,7 @@ export const loginUser = async (formData, state, dispatch) => {
 export const registerUser = async (formData, state, dispatch) => {
 	try {
 		const response = await axios.post(
-			"http://localhost:1337/auth/local/register",
+			`${keys.API_DOMAIN}/auth/local/register`,
 			formData,
 			setRequestHeaders(),
 		);

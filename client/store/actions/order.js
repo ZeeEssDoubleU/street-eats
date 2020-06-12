@@ -1,5 +1,7 @@
 import axios from "axios";
 import { setRequestHeaders } from "./auth";
+// import urls
+import keys from "../../../config/keys";
 
 export const actionTypes_cart = {
 	CREATE_PAYMENT_INTENT: "CREATE_PAYMENT_INTENT",
@@ -10,7 +12,7 @@ export const actionTypes_cart = {
 export const paymentIntent_create = async (items, dispatch) => {
 	try {
 		const response = await axios.post(
-			"http://localhost:1337/orders/payment-intent/create",
+			`${keys.API_DOMAIN}/orders/payment-intent/create`,
 			items,
 			setRequestHeaders(),
 		);
@@ -36,7 +38,7 @@ export const paymentIntent_retrieve = async (
 ) => {
 	try {
 		const response = await axios.post(
-			"http://localhost:1337/orders/payment-intent/retrieve",
+			`${keys.API_DOMAIN}/orders/payment-intent/retrieve`,
 			{ paymentIntent_id, items },
 			setRequestHeaders(),
 		);
@@ -62,7 +64,7 @@ export const paymentIntent_update = async (
 ) => {
 	try {
 		const response = await axios.post(
-			"http://localhost:1337/orders/payment-intent/update",
+			`${keys.API_DOMAIN}/orders/payment-intent/update`,
 			{ paymentIntent_id, items },
 			setRequestHeaders(),
 		);

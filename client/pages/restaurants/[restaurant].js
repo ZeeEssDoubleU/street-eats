@@ -9,6 +9,8 @@ import ListingCard from "../../components/ListingCard";
 // import store
 import useStore from "../../store/useStore";
 import { addItem } from "../../store/actions/cart";
+// import urls
+import keys from "../../../config/keys";
 
 // ******************
 // component
@@ -21,7 +23,7 @@ const restaurant = ({ restaurant, dishes }) => {
 	const displayDishes = dishes?.map((dish) => (
 		<Grid item key={dish.id}>
 			<ListingCard
-				image={`http://localhost:1337${dish.image.url}`}
+				image={`${keys.API_DOMAIN}${dish.image.url}`}
 				name={dish.name}
 				description={dish.description}
 				buttonText="Add to Cart"
@@ -74,7 +76,7 @@ const RestaurantName = styled.div`
 export const getStaticPaths = async () => {
 	// call an external API endpoint to get posts
 	try {
-		const response = await axios.get("http://localhost:1337/restaurants");
+		const response = await axios.get(`${keys.API_DOMAIN}/restaurants`);
 		const restaurants = response.data;
 
 		// get the paths we want to pre-render based on posts
@@ -93,7 +95,7 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async ({ params }) => {
 	try {
 		const response = await axios.get(
-			`http://localhost:1337/restaurants/${params.restaurant}`,
+			`${keys.API_DOMAIN}/restaurants/${params.restaurant}`,
 		);
 		const restaurant = response.data;
 		const dishes = response.data.dishes;
