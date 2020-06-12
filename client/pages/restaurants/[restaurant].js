@@ -14,7 +14,7 @@ import { addItem } from "../../store/actions/cart";
 // component
 // ******************
 
-const restaurants = ({ restaurant, dishes }) => {
+const restaurant = ({ restaurant, dishes }) => {
 	const { state, dispatch } = useStore();
 	const router = useRouter();
 
@@ -52,7 +52,7 @@ const restaurants = ({ restaurant, dishes }) => {
 		</>
 	);
 };
-export default restaurants;
+export default restaurant;
 
 // ******************
 // styles
@@ -72,17 +72,17 @@ const RestaurantName = styled.div`
 
 // This function gets called at build time
 export const getStaticPaths = async () => {
-	// Call an external API endpoint to get posts
+	// call an external API endpoint to get posts
 	try {
 		const response = await axios.get("http://localhost:1337/restaurants");
 		const restaurants = response.data;
 
-		// Get the paths we want to pre-render based on posts
+		// get the paths we want to pre-render based on posts
 		const paths = restaurants.map((restaurant) => ({
-			params: { slug: restaurant.slug },
+			params: { restaurant: restaurant.slug },
 		}));
 
-		// We'll pre-render only these paths at build time.
+		// pre-render only these paths at build time.
 		// { fallback: false } means other routes should 404.
 		return { paths, fallback: false };
 	} catch (error) {
@@ -93,7 +93,7 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async ({ params }) => {
 	try {
 		const response = await axios.get(
-			`http://localhost:1337/restaurants/${params.slug}`,
+			`http://localhost:1337/restaurants/${params.restaurant}`,
 		);
 		const restaurant = response.data;
 		const dishes = response.data.dishes;

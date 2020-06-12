@@ -1,21 +1,21 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import Router, { useRouter } from "next/router";
 import { loadStripe } from "@stripe/stripe-js";
 import Cookies from "js-cookie";
 // import components
-import CheckoutForm from "../components/CheckoutForm";
+import CheckoutForm from "../../components/CheckoutForm";
 import { Elements as StripeElementsProvider } from "@stripe/react-stripe-js";
 // import store / actions
-import useStore from "../store/useStore";
+import useStore from "../../store/useStore";
 import {
 	paymentIntent_create,
 	paymentIntent_retrieve,
 	paymentIntent_update,
-} from "../store/actions/order";
-import { setRequestHeaders } from "../store/actions/auth";
+} from "../../store/actions/order";
+import { setRequestHeaders } from "../../store/actions/auth";
 // import api keys
-import keys from "../../config/keys";
+import keys from "../../../config/keys";
 
 // ******************
 // component
@@ -28,14 +28,18 @@ const stripePromise = loadStripe(keys.STRIPE_P_KEY);
 const checkout = (props) => {
 	const router = useRouter();
 	const { state, dispatch } = useStore();
+	// retrieve paymentIntent as soon as checkout opened to track sales funnel
+	const [paymentIntent, setPaymentIntent] = useState();
 
 	const filterCart = async () => {
 		// grab page slug for cart filtering
-		const checkoutSlug = router.query.restaurant;
+		// use window.location instead of router because router incorrect on page refresh
+		// will work, because router.route confirmed below in useEffect
+		const vendorCheckoutSlug = window.location.pathname.split("/")[2];
 
 		// declare checkout items
 		const restaurant = await state.cart?.filter(
-			(restaurant) => restaurant.slug === checkoutSlug,
+			(restaurant) => restaurant.slug === vendorCheckoutSlug,
 		);
 		const items = await restaurant[0]?.items;
 		return items;
@@ -64,7 +68,7 @@ const checkout = (props) => {
 			Cookies.set("paymentIntent_id", paymentIntent.id);
 		}
 
-		return paymentIntent;
+		setPaymentIntent(paymentIntent);
 	};
 
 	useEffect(() => {
@@ -79,14 +83,14 @@ const checkout = (props) => {
 	}, []);
 
 	useEffect(() => {
-		if (router.route === "/checkout") {
+		if (router.route === "/checkout/[vendor]") {
 			getPaymentIntent();
 		}
 	}, [router.route, state.cart]);
 
 	return (
 		<StripeElementsProvider stripe={stripePromise}>
-			<CheckoutForm />
+			<CheckoutForm paymentIntent={paymentIntent} />
 		</StripeElementsProvider>
 	);
 };

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
+import Router from "next/router";
 // import components
 import {
 	Container,
@@ -25,15 +26,16 @@ import { paymentIntent_create } from "../store/actions/auth";
 // component
 // ******************
 
-const CheckoutForm = () => {
+const CheckoutForm = ({ paymentIntent }) => {
 	const stripe = useStripe();
 	const elements = useElements();
+	const [loading, setLoading] = useState(false);
 
 	const [paymentInfo, setPaymentInfo] = useState({
-		name: null,
-		address: null,
-		city: null,
-		postalCode: null,
+		name: "",
+		address: "",
+		city: "",
+		postalCode: "",
 	});
 
 	const handleChange = (target) => (event) => {
@@ -46,13 +48,41 @@ const CheckoutForm = () => {
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-		const { error, paymentMethod } = await stripe.createPaymentMethod({
-			type: "card",
-			card: elements.getElement(CardElement),
-		});
+
+		try {
+			// setLoading(true);
+			const response = await stripe.confirmCardPayment(
+				paymentIntent.client_secret,
+				{
+					payment_method: {
+						card: elements.getElement(CardNumberElement),
+						billing_details: {
+							name: paymentInfo.name,
+							address: paymentInfo.address,
+						},
+					},
+				},
+			);
+			setLoading(response ? true : false);
+
+			// The payment has been processed!
+			if (result.paymentIntent.status === "succeeded") {
+				// setLoading(false);
+
+				// Show a success message to your customer
+				console.log("payment result:", result);
+
+				// There's a risk of the customer closing the window before callback execution
+				// Set up a webhook or plugin to listen for the payment_intent.succeeded event that handles any business critical post-payment actions.
+			}
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
-	return (
+	return loading ? (
+		<div>Loading...</div>
+	) : (
 		<Container maxWidth="sm">
 			<Card_withElevate>
 				<CardHeader title="Billing Information:" />
@@ -83,7 +113,7 @@ const CheckoutForm = () => {
 									onChange={handleChange("address")}
 								/>
 							</Grid>
-							<Grid item xs={12}>
+							<Grid item xs={12} md={6}>
 								<TextField
 									required
 									label="City"
@@ -93,10 +123,20 @@ const CheckoutForm = () => {
 									onChange={handleChange("city")}
 								/>
 							</Grid>
-							<Grid item xs={12}>
+							<Grid item xs={6} md={3}>
 								<TextField
 									required
-									label="Postal Code"
+									label="State"
+									variant="filled"
+									fullWidth
+									value={paymentInfo.state}
+									onChange={handleChange("state")}
+								/>
+							</Grid>
+							<Grid item xs={6} md={3}>
+								<TextField
+									required
+									label="Zip Code"
 									variant="filled"
 									fullWidth
 									value={paymentInfo.postalCode}
@@ -124,6 +164,7 @@ const CheckoutForm = () => {
 										inputProps: { component: CardCvcElement },
 									}}
 									InputLabelProps={{ shrink: true }}
+									label=" "
 									variant="filled"
 									fullWidth
 								/>
@@ -145,10 +186,18 @@ const CheckoutForm = () => {
 					</form>
 				</CardContent>
 				<StyledCardActions>
-					<CardActionButton color="primary" variant="contained">
+					<CardActionButton
+						color="secondary"
+						variant="contained"
+						type="submit"
+						form="form-billing"
+						disabled={!stripe || !elements ? true : false}
+					>
 						Place Order
 					</CardActionButton>
-					<CardActionButton>Cancel</CardActionButton>
+					<CardActionButton onClick={() => Router.back()}>
+						Cancel
+					</CardActionButton>
 				</StyledCardActions>
 			</Card_withElevate>
 		</Container>

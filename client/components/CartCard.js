@@ -19,15 +19,6 @@ const CartCard = (props) => {
 	const { state, dispatch } = useStore();
 	const router = useRouter();
 
-	// check if authenticated
-	// redirect to login page if not
-	const isAuthenticated = state.isAuthenticated
-		? {
-				pathname: "/checkout",
-				query: { restaurant: props.restaurant?.slug },
-		  }
-		: "/login";
-
 	const displayCard = props.isEmpty ? (
 		// if card has empty prop, display empty text
 		<Card_withElevate>
@@ -41,19 +32,29 @@ const CartCard = (props) => {
 			<CardContent>
 				<CartCardItems restaurant={props.restaurant} />
 			</CardContent>
-			<StyledCardActions>
-				<Link href={isAuthenticated} passHref>
-					<CardActionButton
-						variant="contained"
-						color="secondary"
-						fullWidth
+			{router.route === "/checkout/[vendor]" ? null : (
+				<StyledCardActions>
+					<Link
+						// check if authenticated
+						// redirect to login page if not
+						href={state.isAuthenticated ? "/checkout/[vendor]" : "/login"}
+						as={
+							state.isAuthenticated
+								? `/checkout/${props.restaurant.slug}`
+								: null
+						}
+						passHref
 					>
-						{router.route === "/checkout"
-							? "Place Order"
-							: "Go to Checkout"}
-					</CardActionButton>
-				</Link>
-			</StyledCardActions>
+						<CardActionButton
+							variant="contained"
+							color="secondary"
+							fullWidth
+						>
+							Go to Checkout
+						</CardActionButton>
+					</Link>
+				</StyledCardActions>
+			)}
 		</Card_withElevate>
 	);
 

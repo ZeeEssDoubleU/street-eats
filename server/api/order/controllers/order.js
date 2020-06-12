@@ -37,9 +37,7 @@ const paymentIntent_create = async (ctx) => {
     });
     console.log("creating payment intent...");
 
-    // TODO: consider only returning client secret and id
-    // return { client_secret: paymentIntent.client_secret };
-    return paymentIntent;
+    return { id: paymentIntent.id, client_secret: paymentIntent.client_secret };
   } catch (error) {
     console.error(error);
   }
@@ -66,8 +64,7 @@ const paymentIntent_retrieve = async (ctx) => {
       console.log("updating payment intent...");
     }
 
-    // TODO: consider only returning client secret
-    return paymentIntent;
+    return { id: paymentIntent.id, client_secret: paymentIntent.client_secret };
   } catch (error) {
     console.error(error);
   }
@@ -87,8 +84,7 @@ const paymentIntent_update = async (ctx) => {
       amount
     );
 
-    // TODO: consider only returning client secret
-    return paymentIntent;
+    return { id: paymentIntent.id, client_secret: paymentIntent.client_secret };
   } catch (error) {
     console.error(error);
   }

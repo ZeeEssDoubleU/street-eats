@@ -26,8 +26,8 @@ const Cart = (props) => {
 			// else, display cart list
 			state.cart
 				?.filter((restaurant) =>
-					router.route === "/checkout"
-						? restaurant.slug === router.query.restaurant
+					router.route === "/checkout/[vendor]"
+						? restaurant.slug === router.query.vendor
 						: restaurant,
 				)
 				.map((restaurant) => (

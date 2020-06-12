@@ -20,7 +20,7 @@ const restaurants = ({ restaurants }) => {
 				buttonText="View Menu"
 				hasLink
 				as={`/restaurants/${restaurant.slug}`}
-				href={`/restaurants/[slug]`}
+				href={`/restaurants/[restaurant]`}
 			/>
 		</Grid>
 	));

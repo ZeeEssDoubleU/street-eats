@@ -55,7 +55,7 @@ export const loginUser = async (formData, state, dispatch) => {
 			setRequestHeaders(),
 		);
 		const credentials = response.data;
-		console.log("response_login:", credentials);
+		// console.log("response_login:", credentials);
 
 		await saveCredsToCookies(credentials, state, dispatch);
 
@@ -73,7 +73,7 @@ export const registerUser = async (formData, state, dispatch) => {
 			setRequestHeaders(),
 		);
 		const credentials = response.data;
-		console.log("response_signup", credentials);
+		// console.log("response_signup", credentials);
 
 		saveCredsToCookies(credentials, state, dispatch);
 
