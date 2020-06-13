@@ -1,4 +1,7 @@
 node_modules
 .next
 .env
+
+# config files
 keys_dev.js
+misc.js
