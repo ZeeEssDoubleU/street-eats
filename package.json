@@ -21,6 +21,8 @@
 		"all-update": "npm i && npm run client-update && npm run server-update",
 		"all-uninstall": "npm i && npm run client-uninstall && npm run server-uninstall",
 		"dev": "concurrently 'npm run dev --prefix client' 'npm run dev --prefix server'",
+		"build": "npm run build --prefix server && npm run build --prefix client",
+		"heroku-postbuild": "npm run build",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"keywords": [],
