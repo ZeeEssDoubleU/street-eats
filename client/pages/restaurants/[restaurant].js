@@ -20,20 +20,20 @@ const restaurant = ({ restaurant, dishes }) => {
 	const { state, dispatch } = useStore();
 	const router = useRouter();
 
-	const displayDishes = dishes?.map((dish) => (
-		<Grid item key={dish.id}>
-			<ListingCard
-				image={`${keys.API_DOMAIN}${dish.image.url}`}
-				name={dish.name}
-				description={dish.description}
-				buttonText="Add to Cart"
-				buttonClick={() => {
-					const payload = { dish, restaurant };
-					addItem(payload, state, dispatch);
-				}}
-			/>
-		</Grid>
-	));
+	// const displayDishes = dishes?.map((dish) => (
+	// 	<Grid item key={dish.id}>
+	// 		<ListingCard
+	// 			image={`${keys.API_DOMAIN}${dish.image.url}`}
+	// 			name={dish.name}
+	// 			description={dish.description}
+	// 			buttonText="Add to Cart"
+	// 			buttonClick={() => {
+	// 				const payload = { dish, restaurant };
+	// 				addItem(payload, state, dispatch);
+	// 			}}
+	// 		/>
+	// 	</Grid>
+	// ));
 
 	// If the page is not yet generated, this will be displayed
 	// initially until getStaticProps() finishes running
@@ -49,7 +49,7 @@ const restaurant = ({ restaurant, dishes }) => {
 						{restaurant.name}
 					</Typography>
 				</RestaurantName>
-				{displayDishes}
+				{/* {displayDishes} */}
 			</StyledGrid>
 		</>
 	);
@@ -76,8 +76,9 @@ const RestaurantName = styled.div`
 export const getStaticPaths = async () => {
 	// call an external API endpoint to get posts
 	try {
-		const response = await axios.get(`${keys.API_DOMAIN}/restaurants`);
+		const response = await axios.get(`http://localhost:1337/restaurants`);
 		const restaurants = response.data;
+		console.log("getting restaurants...");
 
 		// get the paths we want to pre-render based on posts
 		const paths = restaurants.map((restaurant) => ({
@@ -95,10 +96,14 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async ({ params }) => {
 	try {
 		const response = await axios.get(
-			`${keys.API_DOMAIN}/restaurants/${params.restaurant}`,
+			`http://localhost:1337/restaurants/${params.restaurant}`,
 		);
 		const restaurant = response.data;
+		console.log("building restaurant...");
+
 		const dishes = response.data.dishes;
+		console.log("building restaurant dishes...");
+
 		return {
 			props: {
 				restaurant,
