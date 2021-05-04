@@ -1,0 +1,25 @@
+{
+  "kind": "collectionType",
+  "collectionName": "payment_intents",
+  "info": {
+    "name": "payment_intent",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false,
+    "increments": true,
+    "timestamps": true,
+    "comment": ""
+  },
+  "attributes": {
+    "users_permissions_user": {
+      "plugin": "users-permissions",
+      "model": "user",
+      "via": "payment_intent"
+    },
+    "paymentIntent_id": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

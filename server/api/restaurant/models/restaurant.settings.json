@@ -1,0 +1,65 @@
+{
+  "kind": "collectionType",
+  "collectionName": "restaurants",
+  "info": {
+    "name": "restaurant",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "slug": {
+      "type": "string",
+      "unique": true
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "richtext",
+      "required": true
+    },
+    "image": {
+      "collection": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images"
+      ],
+      "plugin": "upload",
+      "required": false,
+      "pluginOptions": {}
+    },
+    "dishes": {
+      "collection": "dish",
+      "via": "restaurant"
+    },
+    "phone": {
+      "type": "string",
+      "required": true
+    },
+    "address": {
+      "type": "string",
+      "required": false
+    },
+    "city": {
+      "type": "string",
+      "required": false
+    },
+    "state": {
+      "type": "string",
+      "required": false
+    },
+    "postal_code": {
+      "type": "string",
+      "required": false
+    },
+    "orders": {
+      "collection": "order",
+      "via": "restaurant"
+    }
+  }
+}

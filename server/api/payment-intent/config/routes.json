@@ -1,0 +1,60 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/payment-intent",
+      "handler": "payment-intent.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/payment-intent/count",
+      "handler": "payment-intent.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/payment-intent/:id",
+      "handler": "payment-intent.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/payment-intent/retrieve",
+      "handler": "payment-intent.retrieve",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/payment-intent/create",
+      "handler": "payment-intent.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/payment-intent/:id",
+      "handler": "payment-intent.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/payment-intent/:id",
+      "handler": "payment-intent.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}
