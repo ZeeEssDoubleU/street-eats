@@ -1,0 +1,25 @@
+{
+  "kind": "collectionType",
+  "collectionName": "carts",
+  "info": {
+    "name": "cart"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "user": {
+      "via": "cart",
+      "plugin": "users-permissions",
+      "model": "user",
+      "required": true
+    },
+    "dishes": {
+      "type": "json"
+    },
+    "total": {
+      "type": "decimal"
+    }
+  }
+}
