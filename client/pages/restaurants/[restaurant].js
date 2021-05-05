@@ -1,5 +1,4 @@
 import axios from "axios"
-import styled from "styled-components"
 // import components
 import Restaurant from "../../components/Pages/Restaurants/Restaurant"
 

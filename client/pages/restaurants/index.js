@@ -27,7 +27,7 @@ export async function getStaticProps() {
 			},
 		}
 	} catch (error) {
-		console.error(error)
+		// console.error(error) // ? debug
 		return {
 			notFound: true,
 		}
