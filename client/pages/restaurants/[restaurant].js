@@ -17,7 +17,7 @@ export default function RestaurantPage({ restaurant, dishes }) {
 
 // This function gets called at build time
 export const getStaticPaths = async () => {
-	// call an external API endpoint to get posts
+	// call an external API endpoint to get restaurants
 	try {
 		const response = await axios.get(
 			`${process.env.NEXT_PUBLIC_API_URL}/restaurants`,
@@ -25,7 +25,7 @@ export const getStaticPaths = async () => {
 		const restaurants = response.data
 		console.log("get restaurants...")
 
-		// get the paths we want to pre-render based on posts
+		// get the paths we want to pre-render based on restaurants
 		const paths = restaurants.map((restaurant) => ({
 			params: { restaurant: restaurant.slug },
 		}))
@@ -56,6 +56,9 @@ export const getStaticProps = async ({ params }) => {
 			},
 		}
 	} catch (error) {
-		console.error(error)
+		// console.error(error) // ? debug
+		return {
+			notFound: true,
+		}
 	}
 }

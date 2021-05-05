@@ -29,10 +29,9 @@ export const getServerSideProps = async (ctx) => {
 	//		- filter orders matching user id (db)
 	// 	- display all orders
 
+	const isAuth = creds_areValid(ctx)
 	const orderId = ctx.query?.order
 	const order = orderId && (await getOrder(orderId))
-
-	const isAuth = creds_areValid(ctx)
 
 	return {
 		props: {
