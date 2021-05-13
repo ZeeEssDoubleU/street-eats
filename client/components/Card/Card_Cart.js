@@ -1,8 +1,6 @@
 import React from "react"
-import PropTypes from "prop-types"
 import styled from "styled-components"
 import Link from "next/link"
-import { useRouter } from "next/router"
 // import components
 import { CardHeader, CardContent } from "@material-ui/core"
 import CardActionButton from "./CardActionButton"
@@ -20,7 +18,6 @@ import { cart_removeRestaurant } from "../../store/actions/cart"
 
 export default function Card_Cart({ disabled, isEmpty, ...props }) {
 	const { state, dispatch } = useStore()
-	const router = useRouter()
 
 	const displayCard = isEmpty ? (
 		// if card has empty prop, display empty text

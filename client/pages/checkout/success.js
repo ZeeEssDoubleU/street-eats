@@ -20,7 +20,7 @@ export default function SuccessPage({ order, isAuth, ...props }) {
 // inital props
 // ***********
 
-export const getServerSideProps = async (ctx) => {
+export async function getServerSideProps(ctx) {
 	// TODO: need to create check so that only logged in user can see their orders
 	//		-	check order user id
 	//		-	check that logged in user matches order user id
@@ -29,9 +29,14 @@ export const getServerSideProps = async (ctx) => {
 	//		- filter orders matching user id (db)
 	// 	- display all orders
 
+	// console.log("ctx:", ctx) // ? debug
+
 	const isAuth = creds_areValid(ctx)
 	const orderId = ctx.query?.order
 	const order = orderId && (await getOrder(orderId))
+
+	// console.log("order:", order) // ? debug
+	// console.log("isAuth:", isAuth) // ? debug
 
 	return {
 		props: {

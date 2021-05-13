@@ -37,7 +37,7 @@ export default ({ isAuth, ...props }) => {
 // ***********
 // inital props
 // ***********
-export const getServerSideProps = async (ctx, req, res) => {
+export async function getServerSideProps(ctx) {
 	const isAuth = creds_areValid(ctx)
 
 	return { props: { isAuth } }
