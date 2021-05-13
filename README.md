@@ -15,6 +15,6 @@ git subtree add --prefix server origin-server master --squash
 ### pushes
 
 git push origin -u --all  
-git subtree push --prefix client origin-client master --all  
-git subtree push --prefix server origin-server master --all  
+git subtree push --prefix client origin-client master  
+git subtree push --prefix server origin-server master  
 git push origin -u --all && git subtree push --prefix client origin-client master --all && git subtree push --prefix server origin-server master --all
